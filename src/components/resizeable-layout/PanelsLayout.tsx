@@ -45,12 +45,12 @@ function PanelsLayout(props: PanelsLayoutProps) {
   );
   
   const handleStartDragging = (resizerId: number, e: React.PointerEvent) => {
+    e.preventDefault();
+
     const isColumnResizeable = columns[resizerId].resizeable ?? true;
     if (!isColumnResizeable) {
       return;
     }
-
-    e.preventDefault();
 
     const leftColumnId = resizerId;
     const draggingColumnId = resizerId + 1;
@@ -148,8 +148,7 @@ function PanelsLayout(props: PanelsLayoutProps) {
          onPointerMove={handleDragging}
          onPointerUp={handleDraggingStop}
          onPointerCancel={handleDraggingStop}
-         onPointerLeave={ shouldCancelOnLeavel ? handleDraggingStop : undefined }
-         >
+         onPointerLeave={ shouldCancelOnLeavel ? handleDraggingStop : undefined }>
       {columns.map((column, index) =>
         <React.Fragment key={index}>
           <Panel

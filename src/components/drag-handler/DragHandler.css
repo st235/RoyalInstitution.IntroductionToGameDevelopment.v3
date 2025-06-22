@@ -1,0 +1,36 @@
+.drag-handler {
+    width: 32px;
+    height: 100%;
+    position: relative;
+    display: block;
+    cursor: col-resize;
+}
+
+.drag-handler .background {
+    width: 2px;
+    height: 10%;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    margin: auto auto;
+
+    background-color: var(--on-background);
+    border-radius: 32px;
+
+    /* Resize animation. */
+    transition: height 0.3s ease;
+}
+
+.drag-handler:hover .background {
+  height: 75%;
+  background-color: var(--accent);
+}
+
+.drag-handler:active .background {
+  height: 75%;
+  background-color: var(--accent);
+}

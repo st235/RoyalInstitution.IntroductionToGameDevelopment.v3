@@ -7,8 +7,8 @@
 }
 
 .drag-handler .background {
-    width: 2px;
-    height: 10%;
+    width: 4px;
+    height: 20%;
 
     position: absolute;
     top: 0;
@@ -18,7 +18,7 @@
 
     margin: auto auto;
 
-    background-color: var(--on-background);
+    background-color: var(--container-secondary);
     border-radius: 32px;
 
     /* Resize animation. */
@@ -26,11 +26,9 @@
 }
 
 .drag-handler:hover .background {
-  height: 75%;
-  background-color: var(--accent);
+  height: 95%;
 }
 
 .drag-handler:active .background {
-  height: 75%;
-  background-color: var(--accent);
+  height: 95%;
 }

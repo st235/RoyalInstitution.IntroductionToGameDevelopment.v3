@@ -1,3 +1,19 @@
+@font-face {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-synthesis-weight: auto;
+  font-style: normal;
+  src: url(./assets/Montserrat-VariableFont_wght.ttf);
+}
+
+@font-face {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-synthesis-weight: auto;
+  font-style: italic;
+  src: url(./assets/Montserrat-Italic-VariableFont_wght.ttf);
+}
+
 * {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -5,7 +21,7 @@
 }
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Montserrat", sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -14,26 +30,27 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* Primary Container & Content */
-  --container-primary: #f5f0e6;      /* Light beige */
-  --container-on-primary: #4a3f35;   /* Warm dark brown */
+  /* Primary background colours. */
+  --background: #fdfdfd;
+  --on-background: #2a2a2a;
 
-  /* Secondary Container & Content */
-  --container-secondary: #e6dbcf;    /* Muted beige */
-  --container-on-secondary: #4a3f35;
+  /* Primary Container & Content. */
+  --container-primary: #f5f5f5;
+  --container-on-primary: #2a2a2a;
 
-  /* Background */
-  --background: #fcfcfc;
-  --on-background: #797979;
+  /* Secondary Container & Content. */
+  --container-secondary: #eeeeee;
+  --container-on-secondary: #333333;
 
-  /* Accent (e.g., buttons, highlights) */
-  --accent: #d2b48c;                 /* Tan */
-  --on-accent: #3d2c1e;              /* Dark contrast */
+  /* Accent. */
+  --accent-primary: #5FA145;         /* Core green. */
+  --accent-secondary: #91c181;       /* Lighter green for hovers, borders. */
+  --on-accent: #ffffff;              /* White text on green. */
 
-  /* Text Hierarchy */
-  --text-primary: #3d2c1e;      /* Strongest for headings, important text */
-  --text-secondary: #9f9f9f;    /* Body text, UI content */
-  --text-caption: #8e8177;      /* Hints, timestamps, less important UI */
+  /* Typography. */
+  --text-primary: #1e1e1e;           /* For headings, strong. */
+  --text-secondary: #555555;         /* For body text. */
+  --text-caption: #888888;           /* For less important text. */
 }
 
 body {

@@ -8,8 +8,8 @@ export default function Logo() {
                 <img src={LogoIde} />
             </div>
             <div className="text">
-                <span className="title">Introduction to Game Development: Snake</span>
-                <span className="subtitle">Web IDE for Royal Institution Interactive Workshop</span>
+                <span className="title">Web IDE: <span className="snake">Snake</span></span>
+                <span className="subtitle">Introduction to Game Development Workshop</span>
             </div>
         </div>
     );

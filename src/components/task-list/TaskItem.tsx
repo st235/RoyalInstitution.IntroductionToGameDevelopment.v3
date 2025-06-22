@@ -1,12 +1,27 @@
 import "./TaskItem.css";
 
-export default function TaskItem() {
+type TaskItemProps = {
+    expanded?: boolean;
+    completed?: boolean;
+    enabled?: boolean;
+    title: string;
+    subtitle: string;
+    icon: string;
+};
+
+function TaskItem(props: TaskItemProps) {
     return (
         <div className="item">
+            <div className="icon">
+                <img src={props.icon} />
+            </div>
             <div className="text">
-                <span className="title">Title</span>
-                <span className="subtitle">Subtitle</span>
+                <span className="title">{props.title}</span>
+                <span className="subtitle">{props.subtitle}</span>
             </div>
         </div>
     );
 }
+
+export default TaskItem;
+export type { TaskItemProps };

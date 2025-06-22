@@ -1,7 +1,10 @@
 .logo {
+    width: 100%;
     display: flex;
+    flex-direction: row;
     padding: 16px;
     margin: 8px;
+    position: relative;
     align-items: center;
     justify-content: start;
     background-color: white;
@@ -10,7 +13,8 @@
 }
 
 .logo .text {
-    height: 100%;
+    display:none;
+    width: auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -31,6 +35,7 @@
 }
 
 .logo .icon {
+    flex-shrink: 0;
     width: 56px;
     height: 56px;
     padding: 12px;

@@ -19,6 +19,7 @@ export default function Panel(props: PanelProps) {
 
     if (!props.overwriteWidth) {
         cssProps.flexGrow = props.defaultWeight;
+        cssProps.flexBasis = 0;
     }
 
     return (

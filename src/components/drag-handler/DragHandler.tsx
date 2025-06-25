@@ -1,9 +1,16 @@
 import "./DragHandler.css";
 
-export default function DragHandler() {
+type DragHandlerProps = {
+    variant: "expanded" | "collapsed";
+}
+
+function DragHandler(props: DragHandlerProps) {
     return (
         <div className="drag-handler">
-            <div className="background" />
+            <div className={`background ${props.variant}`} />
         </div>
     );
 }
+
+export default DragHandler;
+export type { DragHandlerProps };

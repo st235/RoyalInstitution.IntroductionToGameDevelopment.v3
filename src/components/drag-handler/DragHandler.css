@@ -8,7 +8,6 @@
 
 .drag-handler .background {
     width: 4px;
-    height: 20%;
 
     position: absolute;
     top: 0;
@@ -19,16 +18,26 @@
     margin: auto auto;
 
     background-color: var(--container-secondary);
-    border-radius: 32px;
 
     /* Resize animation. */
-    transition: height 0.3s ease;
+    transition: height 0.3s ease, border-radius 0.3s ease;
 }
 
-.drag-handler:hover .background {
-  height: 95%;
+.drag-handler .background.collapsed {
+    height: 20%;
+    border-radius: 32px;
 }
 
-.drag-handler:active .background {
-  height: 95%;
+.drag-handler:hover .background.collapsed {
+  height: 100%;
+  border-radius: 0;
+}
+
+.drag-handler:active .background.collapsed {
+  height: 100%;
+  border-radius: 0;
+}
+
+.drag-handler .background.expanded {
+    height: 100%;
 }

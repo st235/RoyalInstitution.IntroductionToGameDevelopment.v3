@@ -1,0 +1,21 @@
+.navigation-rail {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.navigation-rail > .header {
+    display: block;
+    margin: 0 auto;
+}
+
+.navigation-rail > .icons {
+    background-color: rebeccapurple;
+}
+
+.navigation-rail > .footer {
+    background-color: bisque;
+}

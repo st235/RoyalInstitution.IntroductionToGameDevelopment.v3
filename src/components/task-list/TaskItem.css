@@ -1,11 +1,14 @@
 .task-list .list .item {
+  width: 512px;
+
   display: flex;
   flex-direction: row;
   justify-content: start;
   align-items: start;
   overflow: hidden;
 
-  padding: 32px;
+  padding: 0;
+  margin: 8px;
   border-radius: 8px;
   cursor: pointer;
 

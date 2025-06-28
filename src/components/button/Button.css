@@ -38,3 +38,13 @@
         background-color: var(--accent-primary);
     };
 }
+
+.button.secondary {
+    color: var(--container-on-secondary);
+    background-color: var(--container-secondary);
+
+    &:hover {
+        color: var(--on-accent);
+        background-color: var(--accent-secondary);
+    };
+}

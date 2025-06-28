@@ -1,6 +1,6 @@
 import "./RootNavigator.css";
 
-import type { ExerciseTask } from "../types/Exercise";
+import type { PageWithExercise } from "../types/Page";
 
 import { useState } from "react";
 import { useAppSelector } from "../hooks/redux";
@@ -11,12 +11,12 @@ import Logo from "../components/logo/Logo";
 import InfoFooter from "../components/info-footer/InfoFooter";
 import ExerciseList from "../components/exercise-list/ExerciseList";
 
-import PageExercise0 from "./exercise-0/PageExercise0";
+import PageExercise0 from "./exercises/PageExercise0";
 
 type SidebarRailProps = {
   selectedTaskId: string;
-  exercises: ExerciseTask[];
-  onExerciseSelected: (exercise: ExerciseTask) => void;
+  exercises: PageWithExercise[];
+  onExerciseSelected: (exercise: PageWithExercise) => void;
 };
 
 function SidebarRail(props: SidebarRailProps) {
@@ -35,7 +35,7 @@ function RootNavigator() {
   const exercises = useAppSelector(state => state.exercise.exercises);
   const [selectedExerciseTaskId, setSelectedExerciseTaskId] = useState<string>("1");
 
-  function onExerciseSelected(e: ExerciseTask) {
+  function onExerciseSelected(e: PageWithExercise) {
     if (e.state == "locked" || e.id == selectedExerciseTaskId) {
       return;
     }
@@ -53,7 +53,7 @@ function RootNavigator() {
             onExerciseSelected={onExerciseSelected} />
         }
       >
-        {selectedExerciseTaskId === "1" && <PageExercise0 exercise={exercises[selectedExerciseTaskId]} />}
+        {selectedExerciseTaskId === "1" && <PageExercise0 page={exercises[selectedExerciseTaskId]} />}
       </SidebarLayout>
     </div>
   )

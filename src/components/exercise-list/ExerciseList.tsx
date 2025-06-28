@@ -2,12 +2,12 @@ import "./ExerciseList.css";
 import IconLock from "../../assets/ic-lock-fill.svg";
 import IconCheckLg from "../../assets/ic-check-lg.svg";
 
-import { type ExerciseTask } from "../../types/Exercise";
+import { type PageWithExercise } from "../../types/Page";
 import IconButton from "../icon-button/IconButton";
 
 type ExerciseListProps = {
-    exercises: ExerciseTask[];
-    onExerciseSelected: (exercise: ExerciseTask) => void;
+    exercises: PageWithExercise[];
+    onExerciseSelected: (exercise: PageWithExercise) => void;
 };
 
 function ExerciseList(props: ExerciseListProps) {

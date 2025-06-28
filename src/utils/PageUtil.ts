@@ -1,43 +1,44 @@
-import RAW_EXERCISES from "../assets/exercises.json";
+import rawPages from "../assets/pages.json";
 
-import type { Exercise, ExerciseTask, ExerciseState } from "../types/Exercise";
+import type { PageStatic, PageWithExercise, PageState } from "../types/Page";
 
 import { ReadFromLocalStorage, SaveToLocalStorage } from "./LocalStorageUtil";
 
-const EXERCISES_LOOKUP: { [id: string]: Exercise } =
+const pagesLookup: { [id: string]: PageStatic } =
     Object.fromEntries(
-        RAW_EXERCISES.exercises.map(exercise => {
+        rawPages.pages.map(page => {
             return {
-                id: exercise.id,
-                ordinal: exercise.ordinal,
-                title: exercise.title,
-                description: exercise.description,
-                shoudOpen: exercise.shouldOpen ?? [],
+                id: page.id,
+                ordinal: page.ordinal,
+                title: page.title,
+                description: page.description,
+                shoudOpen: page.shouldOpen ?? [],
+                sandboxPlaceholder: page.sandboxPlaceholder,
             };
         })
-        .map(exercise => [exercise.id, exercise])
+        .map(page => [page.id, page])
     );
 
-function LoadExercisesList(): ExerciseTask[] {
+function LoadPagesWithExercises(): PageWithExercise[] {
     const completedExerciseIds = new Set<string>(
         ReadFromLocalStorage<string[]>("completed-exercises-list")
     );
     const openedExerciseIds = new Set<string>(
-        RAW_EXERCISES.openByDefault as string[]
+        rawPages.openByDefault as string[]
     );
 
     for (const completedId of completedExerciseIds) {
-        const openedIds = EXERCISES_LOOKUP[completedId].shoudOpen;
+        const openedIds = pagesLookup[completedId].shoudOpen;
         for (const openedId of openedIds) {
             openedExerciseIds.add(openedId);
         }
     }
 
-    return Object.values(EXERCISES_LOOKUP).map(exercise => {
+    return Object.values(pagesLookup).map(exercise => {
         const isCompleted: boolean = completedExerciseIds.has(exercise.id);
         const isOpened: boolean = openedExerciseIds.has(exercise.id);
 
-        let state: ExerciseState = "locked";
+        let state: PageState = "locked";
         if (isCompleted) {
             state = "completed";
         } else if (isOpened) {
@@ -67,5 +68,5 @@ function SaveExerciseSandboxContent(id: string, content: string): boolean {
     return SaveToLocalStorage<string>(`exercise-sandox-content-${id}`, content);
 }
 
-export { LoadExercisesList, SaveExerciseCompletion, LoadExerciseSandboxContent, SaveExerciseSandboxContent };
+export { LoadPagesWithExercises as LoadExercisesList, SaveExerciseCompletion, LoadExerciseSandboxContent, SaveExerciseSandboxContent };
 

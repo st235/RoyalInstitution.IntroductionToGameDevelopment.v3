@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { LoadExerciseSandboxContent, SaveExerciseSandboxContent } from "../../utils/ExerciseUtil";
+import { LoadExerciseSandboxContent, SaveExerciseSandboxContent } from "../../utils/PageUtil";
 
 interface PageWithSandbox {
     sandbox?: string;

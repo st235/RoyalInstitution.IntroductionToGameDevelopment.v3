@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { ExerciseTask } from "../types/Exercise";
+import type { PageWithExercise } from "../types/Page";
 
-import { LoadExercisesList, SaveExerciseCompletion } from "../utils/ExerciseUtil";
+import { LoadExercisesList, SaveExerciseCompletion } from "../utils/PageUtil";
 
 interface ExerciseState {
-    exercises: { [id: string] : ExerciseTask },
+    exercises: { [id: string] : PageWithExercise },
 };
 
 const initialState: ExerciseState = {

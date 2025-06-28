@@ -21,8 +21,8 @@ class MainScene extends Phaser.Scene {
 
     constructor() {
         super();
-        this._desiredRows = 20;
-        this._desiredColumns = 20;
+        this._desiredRows = 40;
+        this._desiredColumns = 30;
 
         this._isRunning = false;
         this._lastUpdateTime = 0;

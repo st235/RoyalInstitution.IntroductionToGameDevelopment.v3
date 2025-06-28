@@ -1,5 +1,4 @@
 .logo-root {
-    margin: 8px;
     z-index: 1;
 
     --logo-size: 56px;
@@ -21,9 +20,9 @@
     height: 100%;
 }
 
-.logo-root > * > .logo-popup {
+.logo-popup {
     position: relative;
-    left: calc(var(--logo-size) + 4px);
+    left: calc(var(--logo-size) + 8px);
 
     width: max-content;
     height: max-content;
@@ -85,7 +84,7 @@
     font-weight: 500;
     font-style: italic;
     font-size: 0.9em;
-    margin-top: 12px;
+    margin-top: 16px;
 }
 
 .logo-popup > .footer > a {

@@ -2,7 +2,7 @@ import "./NavigationRail.css";
 
 import React from 'react';
 
-type NavigationRailProps = {
+interface NavigationRailProps extends React.PropsWithChildren {
     header?: React.ReactNode;
     footer?: React.ReactNode;
 };
@@ -11,7 +11,7 @@ function NavigationRail(props: NavigationRailProps) {
   return (
     <div className="navigation-rail">
         <div className="header">{props.header}</div>
-        <div className="icons"></div>
+        <div className="icons">{props.children}</div>
         <div className="footer">{props.footer}</div>
     </div>
   )

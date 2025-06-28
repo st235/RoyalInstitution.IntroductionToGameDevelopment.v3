@@ -1,28 +1,62 @@
-import './RootNavigator.css';
+import "./RootNavigator.css";
 
-import { useState, useRef } from 'react';
+import type { ExerciseTask } from "../types/Exercise";
 
-import SidebarLayout from '../components/sidebar-layout/SideBarLayout';
-import NavigationRail from '../components/navigation-rail/NavigationRail';
-import Logo from '../components/logo/Logo';
+import { useState } from "react";
+import { useAppSelector } from "../hooks/redux";
 
-import PhaserGame, { type PhaserGameRef } from '../game/PhaserGame';
+import SidebarLayout from "../components/sidebar-layout/SideBarLayout";
+import NavigationRail from "../components/navigation-rail/NavigationRail";
+import Logo from "../components/logo/Logo";
+import InfoFooter from "../components/info-footer/InfoFooter";
+import ExerciseList from "../components/exercise-list/ExerciseList";
+
+import PageExercise0 from "./exercise-0/PageExercise0";
+
+type SidebarRailProps = {
+  selectedTaskId: string;
+  exercises: ExerciseTask[];
+  onExerciseSelected: (exercise: ExerciseTask) => void;
+};
+
+function SidebarRail(props: SidebarRailProps) {
+  return (
+    <NavigationRail
+      header={<Logo />}
+      footer={<InfoFooter />}>
+        <ExerciseList
+          exercises={props.exercises}
+          onExerciseSelected={props.onExerciseSelected}/>
+    </NavigationRail>
+  );
+}
 
 function RootNavigator() {
-  const phaserRef = useRef<PhaserGameRef>(null);
+  const exercises = useAppSelector(state => state.exercise.exercises);
+  const [selectedExerciseTaskId, setSelectedExerciseTaskId] = useState<string>("1");
+
+  function onExerciseSelected(e: ExerciseTask) {
+    if (e.state == "locked" || e.id == selectedExerciseTaskId) {
+      return;
+    }
+
+    setSelectedExerciseTaskId(e.id);
+  }
 
   return (
     <div id="root-navigator">
-      <SidebarLayout sidebar={<NavigationRail header={<Logo />} />} />
+      <SidebarLayout
+        sidebar={
+          <SidebarRail
+            selectedTaskId={selectedExerciseTaskId}
+            exercises={Object.values(exercises)}
+            onExerciseSelected={onExerciseSelected} />
+        }
+      >
+        {selectedExerciseTaskId === "1" && <PageExercise0 exercise={exercises[selectedExerciseTaskId]} />}
+      </SidebarLayout>
     </div>
   )
 }
 
 export default RootNavigator;
-
-      // <PanelsLayout columns={[
-      //   { defaultWeight: 1, resizeable: false, minWidth: 400, content: <TaskList /> },
-      //   { defaultWeight: 1, minWidth: 400, content: <div>Hello world 2</div> },
-      //   { defaultWeight: 2, minWidth: 800, content: <PhaserGame ref={phaserRef} /> },
-      // ]}
-      // resizer={<DragHandler />} />

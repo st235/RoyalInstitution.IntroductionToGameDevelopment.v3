@@ -50,10 +50,11 @@ function PhaserGame(props: PhaserGameProps) {
         return () => {
             EventBus.removeListener("current-scene-ready");
         }
-    }, [props.onSceneReady, ref])
+    }, [props.onSceneReady, ref]);
+
 
     return (
-        <div id="game-container"></div>
+        <div id="game-container" />
     );
 }
 

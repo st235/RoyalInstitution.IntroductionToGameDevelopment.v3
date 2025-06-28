@@ -5,8 +5,8 @@ import MainScene from "./logic/MainScene";
 const config = {
     type: Phaser.AUTO,
     parent: "game-container",
-    width: 720,
-    height: 640,
+    width: 480,
+    height: 680,
     backgroundColor: '#8da259',
     scene: MainScene,
     physics: {

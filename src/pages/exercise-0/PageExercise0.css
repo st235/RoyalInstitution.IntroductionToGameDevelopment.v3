@@ -1,0 +1,14 @@
+.page-exercise-0 {
+    height: 100%;
+
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 12px;
+    padding-right: 12px;
+    row-gap: 16px;
+
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    justify-content: start;
+}

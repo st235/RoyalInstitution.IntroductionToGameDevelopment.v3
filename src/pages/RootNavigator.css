@@ -1,12 +1,6 @@
 #root-navigator {
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
-}
 
-.myresizer {
-  width: 10px;
-  height: 100%;
-  cursor: col-resize;
-  background-color: antiquewhite;
+  overflow: hidden;
 }

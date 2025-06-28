@@ -32,7 +32,7 @@ function SidebarRail(props: SidebarRailProps) {
 }
 
 function RootNavigator() {
-  const exercises = useAppSelector(state => state.exercise.exercises);
+  const exercises = useAppSelector(state => state.exercise.pages);
   const [selectedExerciseTaskId, setSelectedExerciseTaskId] = useState<string>("1");
 
   function onExerciseSelected(e: PageWithExercise) {

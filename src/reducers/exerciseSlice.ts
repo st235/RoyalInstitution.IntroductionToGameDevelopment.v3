@@ -3,14 +3,14 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { PageWithExercise } from "../types/Page";
 
-import { LoadExercisesList, SaveExerciseCompletion } from "../utils/PageUtil";
+import { LoadPagesWithExercises, SaveExerciseCompletion } from "../utils/PageUtil";
 
 interface ExerciseState {
-    exercises: { [id: string] : PageWithExercise },
+    pages: { [id: string] : PageWithExercise },
 };
 
 const initialState: ExerciseState = {
-    exercises: Object.fromEntries(LoadExercisesList().map(e => [e.id, e])),
+    pages: Object.fromEntries(LoadPagesWithExercises().map(page => [page.id, page])),
 };
 
 const exerciseSlice = createSlice({
@@ -18,8 +18,10 @@ const exerciseSlice = createSlice({
     initialState,
     reducers: {
         completeExercise: (state, action: PayloadAction<string>) => {
-            state.exercises[action.payload].state = "completed";
             SaveExerciseCompletion(action.payload);
+            state.pages = Object.fromEntries(
+                LoadPagesWithExercises().map(page => [page.id, page])
+            );
         },
     },
 });

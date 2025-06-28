@@ -68,5 +68,5 @@ function SaveExerciseSandboxContent(id: string, content: string): boolean {
     return SaveToLocalStorage<string>(`exercise-sandox-content-${id}`, content);
 }
 
-export { LoadPagesWithExercises as LoadExercisesList, SaveExerciseCompletion, LoadExerciseSandboxContent, SaveExerciseSandboxContent };
+export { LoadPagesWithExercises, SaveExerciseCompletion, LoadExerciseSandboxContent, SaveExerciseSandboxContent };
 

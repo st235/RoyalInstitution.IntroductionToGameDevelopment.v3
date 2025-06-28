@@ -17,12 +17,14 @@
     padding-left: 16px;
     padding-right: 16px;
 
+    row-gap: 4px;
+
     border-radius: 16px;
     color: var(--container-on-primary);
     background-color: var(--container-primary);
 }
 
-.info-footer-popup .slides {
+.info-footer-popup > .common-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -34,17 +36,17 @@
     padding-right: 24px;
 }
 
-.info-footer-popup * .logo-slides {
+.info-footer-popup * .logo {
     height: 32px;
 }
 
-.info-footer-popup * .slides-text {
+.info-footer-popup * .text {
     margin-left: 16px;
     font-weight: 500;
     font-size: 1.1em;
 }
 
-.info-footer-popup .link {
+.info-footer-popup > .link {
     width: max-content;
 
     margin: 4px;

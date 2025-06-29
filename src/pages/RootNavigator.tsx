@@ -11,7 +11,9 @@ import Logo from "../components/logo/Logo";
 import InfoFooter from "../components/info-footer/InfoFooter";
 import PageList from "../components/page-list/PageList";
 
+import Overlay from "./overlay/Overlay";
 import PageExercise0 from "./exercises/PageExercise0";
+import PageExercise1 from "./exercises/PageExercise1";
 
 type SidebarRailProps = {
   selectedPageId: string;
@@ -46,6 +48,7 @@ function RootNavigator() {
 
   return (
     <div id="root-navigator">
+      <Overlay />
       <SidebarLayout
         sidebar={
           <SidebarRail
@@ -55,6 +58,7 @@ function RootNavigator() {
         }
       >
         {selectedExerciseTaskId === "1" && <PageExercise0 page={exercises[selectedExerciseTaskId]} />}
+        {selectedExerciseTaskId === "2" && <PageExercise1 page={exercises[selectedExerciseTaskId]} />}
       </SidebarLayout>
     </div>
   )

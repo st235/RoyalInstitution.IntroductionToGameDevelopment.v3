@@ -2,7 +2,7 @@ import rawPages from "../assets/pages.json";
 
 import type { PageStatic, PageWithExercise, PageState } from "../types/Page";
 
-import { ReadFromLocalStorage, SaveToLocalStorage } from "./LocalStorageUtil";
+import { ReadFromLocalStorage, SaveToLocalStorage, RemoveFromLocalStorage } from "./LocalStorageUtil";
 
 const pagesLookup: { [id: string]: PageStatic } =
     Object.fromEntries(
@@ -21,7 +21,7 @@ const pagesLookup: { [id: string]: PageStatic } =
 
 function LoadPagesWithExercises(): PageWithExercise[] {
     const completedExerciseIds = new Set<string>(
-        ReadFromLocalStorage<string[]>("completed-exercises-list")
+        ReadFromLocalStorage<string[]>("completed-pages-list")
     );
     const openedExerciseIds = new Set<string>(
         rawPages.openByDefault as string[]
@@ -54,10 +54,10 @@ function LoadPagesWithExercises(): PageWithExercise[] {
 
 function SaveExerciseCompletion(id: string) {
     const completedExerciseIds = new Set<string>(
-        ReadFromLocalStorage<string[]>("completed-exercises-list")
+        ReadFromLocalStorage<string[]>("completed-pages-list")
     );
     completedExerciseIds.add(id);
-    SaveToLocalStorage("completed-exercises-list", Array.from(completedExerciseIds.values()));
+    SaveToLocalStorage("completed-pages-list", Array.from(completedExerciseIds.values()));
 }
 
 function LoadExerciseSandboxContent(id: string): string | undefined {
@@ -68,5 +68,9 @@ function SaveExerciseSandboxContent(id: string, content: string): boolean {
     return SaveToLocalStorage<string>(`exercise-sandox-content-${id}`, content);
 }
 
-export { LoadPagesWithExercises, SaveExerciseCompletion, LoadExerciseSandboxContent, SaveExerciseSandboxContent };
+function DeleteExerciseSandboxContent(id: string): boolean {
+    return RemoveFromLocalStorage(`exercise-sandox-content-${id}`);
+}
+
+export { LoadPagesWithExercises, SaveExerciseCompletion, LoadExerciseSandboxContent, SaveExerciseSandboxContent, DeleteExerciseSandboxContent };
 

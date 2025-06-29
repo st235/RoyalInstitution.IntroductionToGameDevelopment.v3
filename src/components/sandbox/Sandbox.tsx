@@ -17,11 +17,18 @@ type SandboxProps = {
 function Sandbox(props: SandboxProps) {
     const [value, setValue] = useState(props.value ?? "");
 
-    const lineCount = useMemo(() => value.split("\n").length, [value]);
-    
+    const lineCount = useMemo(() => {
+        let count = Math.max(props.initialLinesCount, value.split("\n").length);
+        if (props.placeholder) {
+            count = Math.max(count, props.placeholder?.split("\n").length);
+        }
+
+        return count;
+    }, [props. placeholder, props.initialLinesCount, value]);
+
     const linesArray = useMemo(() =>
             Array.from(
-                { length: Math.max(props.initialLinesCount, lineCount) },
+                { length: lineCount },
                 (_, i) => i + 1
             ), [lineCount, props.initialLinesCount]);
 

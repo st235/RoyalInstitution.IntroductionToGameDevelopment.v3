@@ -49,14 +49,13 @@ class GameMap {
     }
 
     static fromConfigFile(value: string): GameMap {
-        const lines = value.split(/(\s+)/);
+        const lines = value.split("\n").filter(l => l.length > 0);
 
         if (lines.length < 1) {
             throw new Error("Config is empty.");
         }
 
-        const [rows, columns] = lines[0].split(",").map(parseInt);
-
+        const [rows, columns] = lines[0].split(",").map((value) => parseInt(value));
         if (lines.length == 1) {
             return new GameMap(rows, columns, []);
         }

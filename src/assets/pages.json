@@ -11,9 +11,10 @@
         {
             "id": "2",
             "ordinal": 2,
-            "title": "Exercise 2",
-            "description": "Hello world",
-            "shouldOpen": ["3"]
+            "title": "Exercise 2: Design Your Level",
+            "description": "<p>Awesome! Now that you understand the game rules, it's time to shape the game world yourself.</p> <p>In this exercise, you'll define a custom <strong>obstacle layout</strong> using a simple text configuration format. This layout will determine where the snake can move — and where it can’t!</p> <p>Your configuration should follow this format:</p> <pre>#rows,#columns<br>%unoccupied cell symbol%,%obstacle symbol%<br>%obstacles map goes here%</pre> <p><strong>Example:</strong></p> <pre>10,10<br>0,X<br>0000000000<br>00X0000000<br>0000000000<br>0000XXX000<br>0000000000<br>00X0000000<br>0000000000<br>0000000000<br>0000000000<br>0000000000</pre><p><strong>Legend:</strong></p> <ul> <li><code>0</code> = empty space (the snake can move here)</li> <li><code>X</code> = obstacle (the snake cannot move here)</li> </ul> <p><strong>Make sure:</strong></p> <ul> <li>The number of rows and columns matches your actual map layout.</li> <li>Every row contains exactly the number of columns you specified.</li> <li>You experiment with different obstacle placements to create fun or tricky paths!</li> </ul> <p>When you're done, click <strong>Save</strong> to try it out and continue to the next part.</p>",
+            "sandboxPlaceholder": "20,15\n0,X\n000000000000000\n000000000000000\n00XXXX00000XXXXX\n000000000000000\n000000X000000000\n000000X000000000\n000000X000000000\n000000XXXXX00000\n000000000000000\n000X00000000X000\n000X00000000X000\n000XXXXX0000X000\n000000000000X000\n000000000000000\nXXXXX00000000000\n000000000000000\n000000000000000\n00XXX000000XXX00\n000000000000000\n000000000000000",
+            "shouldOpen": []
         },
         {
             "id": "3",

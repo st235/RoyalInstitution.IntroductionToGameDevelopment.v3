@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { LoadExerciseSandboxContent, SaveExerciseSandboxContent } from "../../utils/PageUtil";
+import { LoadExerciseSandboxContent, SaveExerciseSandboxContent, DeleteExerciseSandboxContent } from "../../utils/PageUtil";
 
 interface PageWithSandbox {
     sandbox?: string;
@@ -22,6 +22,9 @@ const pageCommonStateSliceFactory = (pageId: string) => {
                 if (sandboxContent) {
                     state.sandbox = sandboxContent;
                     SaveExerciseSandboxContent(pageId, sandboxContent);
+                } else {
+                    state.sandbox = undefined;
+                    DeleteExerciseSandboxContent(pageId);
                 }
             },
         },

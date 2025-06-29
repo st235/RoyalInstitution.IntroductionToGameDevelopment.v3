@@ -51,6 +51,11 @@
   --text-primary: #1e1e1e;           /* For headings, strong. */
   --text-secondary: #555555;         /* For body text. */
   --text-caption: #888888;           /* For less important text. */
+
+  /* Identica. */
+  --logo-accent-colour: #8da259;
+  --logo-outline-colour: #fdfdfd;
+  --logo-background-colour: #131c19;
 }
 
 body {

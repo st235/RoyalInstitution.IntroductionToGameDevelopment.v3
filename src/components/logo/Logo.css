@@ -2,9 +2,6 @@
     z-index: 1;
 
     --logo-size: 64px;
-    --logo-accent-colour: #8da259;
-    --logo-outline-colour: #fdfdfd;
-    --logo-background-colour: #131c19;
 }
 
 .logo-root > .snake-logo-image {

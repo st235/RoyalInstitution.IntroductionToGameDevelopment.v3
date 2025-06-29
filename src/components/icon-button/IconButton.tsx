@@ -1,7 +1,7 @@
 import "./IconButton.css";
 
 type IconButtonProps = {
-    variant: "primary" | "accent";
+    variant: "primary" | "secondary" | "accent";
     textSymbol?: string;
     iconSymbol?: string;
     iconOverlay?: string;

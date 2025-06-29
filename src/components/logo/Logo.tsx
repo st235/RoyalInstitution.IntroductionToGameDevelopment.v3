@@ -1,5 +1,5 @@
 import "./Logo.css";
-import LogoIde from "../../assets/logo-ide.png";
+import LogoIde from "../../assets/logo.png";
 
 import Popup from "../popup/Popup";
 

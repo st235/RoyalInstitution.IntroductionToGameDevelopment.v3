@@ -24,6 +24,7 @@ function PageList(props: PageListProps) {
                     variant = "accent";
                     icon = IconCheckLg;
                 } else if (page.state == "locked") {
+                    variant = "secondary";
                     icon = IconLock;
                 }
 

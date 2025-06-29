@@ -5,6 +5,11 @@ import FoodItem from "./FoodItem";
 
 const _SNAKE_MOVE_TIME_MS = 100;
 
+type MainSceneConfig = {
+    rows: number;
+    columns: number;
+}
+
 class MainScene extends Phaser.Scene {
     _desiredRows: number;
     _desiredColumns: number;
@@ -21,14 +26,16 @@ class MainScene extends Phaser.Scene {
 
     constructor() {
         super();
-        this._desiredRows = 40;
-        this._desiredColumns = 30;
+    }
+
+    init(data: MainSceneConfig) {
+        this._desiredRows = data.rows;
+        this._desiredColumns = data.columns;
 
         this._isRunning = false;
         this._lastUpdateTime = 0;
         this._currentScore = 0;
     }
-
 
     preload() {
         this._isRunning = true;

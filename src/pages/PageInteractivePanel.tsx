@@ -35,9 +35,6 @@ function PageInteractivePanel(props: PageInteractivePanelProps) {
         <div className="page-interactive-panel">
             <ExerciseCard ordinal={props.page.ordinal} title={props.page.title} description={props.page.description} />
             <Sandbox value={props.sandbox} placeholder={props.sandboxPlaceholder} initialLinesCount={10} onSaveClicked={onSaveClicked} />
-            <div className="control-panel">
-                {/* <Button leftIcon={IconFloppyFill} text="Save" variant="secondary" onClick={onSaveClick} /> */}
-            </div>
         </div>
     );
 }

@@ -50,6 +50,21 @@
     opacity: 10%;
 }
 
+.icon-button.secondary {
+    border-color: var(--container-on-secondary);
+    background-color: var(--container-secondary);
+    color: var(--container-on-secondary);
+    cursor: not-allowed;
+
+    &:hover {
+        border-width: 0px;
+    };
+}
+
+.icon-button.secondary > .background {
+    opacity: 10%;
+}
+
 .icon-button.accent {
     border-color: var(--container-on-primary);
     background-color: var(--accent-primary);

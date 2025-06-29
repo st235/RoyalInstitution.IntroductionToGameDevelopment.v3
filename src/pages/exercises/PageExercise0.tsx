@@ -24,7 +24,7 @@ function PageExercise0(props: PageExercise0Props) {
         <PanelsLayout
             columns={[
                 { defaultWeight: 1, minWidth: 400, content: <PageInteractivePanel page={props.page} sandbox={sandbox} sandboxPlaceholder={props.page.sandboxPlaceholder} /> },
-                { defaultWeight: 1, minWidth: 600, content: <PhaserGame ref={phaserRef} /> },
+                { defaultWeight: 1, minWidth: 600, content: <PhaserGame viewport={{width:480,height:680}} game={{rows:40, columns:30}} ref={phaserRef} /> },
             ]}
             resizer={<DragHandler variant="collapsed" />}
         />

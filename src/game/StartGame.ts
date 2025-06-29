@@ -5,8 +5,6 @@ import MainScene from "./logic/MainScene";
 const config = {
     type: Phaser.AUTO,
     parent: "game-container",
-    width: 480,
-    height: 680,
     backgroundColor: '#8da259',
     scene: MainScene,
     physics: {
@@ -14,8 +12,9 @@ const config = {
     }
 };
 
-const StartGame = (parent: HTMLElement | string): Phaser.Game => {
-    return new Phaser.Game({ ...config, parent });
+const StartGame = (parent: HTMLElement | string, 
+                   width: number, height: number): Phaser.Game => {
+    return new Phaser.Game({ ...config, width, height, parent });
 }
 
 export default StartGame;

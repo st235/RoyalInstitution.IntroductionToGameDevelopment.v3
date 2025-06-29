@@ -11,7 +11,7 @@ function InfoIconButton() {
     return (
         <IconButton
             variant="primary"
-            imageIcon={IconInfoCircleFill} />
+            iconSymbol={IconInfoCircleFill} />
     );
 }
 

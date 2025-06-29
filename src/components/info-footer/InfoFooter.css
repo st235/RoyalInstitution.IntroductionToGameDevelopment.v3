@@ -4,7 +4,7 @@
 
 .info-footer-popup {
     position: relative;
-    left: calc(56px + 8px);
+    left: calc(64px + 8px);
 
     width: max-content;
     height: max-content;

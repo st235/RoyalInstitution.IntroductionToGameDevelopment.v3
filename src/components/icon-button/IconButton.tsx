@@ -1,21 +1,22 @@
 import "./IconButton.css";
 
-import React from 'react';
-
 type IconButtonProps = {
-    textIcon?: string;
-    imageIcon?: string;
-    variant: 'primary';
+    variant: "primary" | "accent";
+    textSymbol?: string;
+    iconSymbol?: string;
+    iconOverlay?: string;
+    isSelected?: boolean;
     onClick?: () => void;
 };
 
 function IconButton(props: IconButtonProps) {
-    let cssStyle: React.CSSProperties = {};
-
     return (
-        <div className={`icon-button ${props.variant}`} style={cssStyle} onClick={props.onClick}>
-            {props.textIcon && <span className="text-icon">{props.textIcon}</span>}
-            {props.imageIcon && <img className="image-icon" src={props.imageIcon} />}
+        <div
+            className={`icon-button ${props.variant} ${props.isSelected ? "selected" : ""}`}
+            onClick={props.onClick}>
+            {props.textSymbol && <span className="text-icon">{props.textSymbol}</span>}
+            {props.iconSymbol && <img className="image-icon" src={props.iconSymbol} />}
+            <div className="background" style={{backgroundImage: `url(\"${props.iconOverlay}\")`,}} />
         </div>
     );
 }

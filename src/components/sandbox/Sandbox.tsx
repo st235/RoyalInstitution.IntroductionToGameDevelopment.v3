@@ -46,7 +46,7 @@ function Sandbox(props: SandboxProps) {
                 <Button
                     leftIcon={IconFloppyFill}
                     text="Save"
-                    variant="secondary"
+                    variant="primary"
                     onClick={() => props.onSaveClicked?.(value)} />
             </div>
         </div>

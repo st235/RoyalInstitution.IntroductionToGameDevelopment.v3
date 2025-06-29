@@ -43,8 +43,8 @@
   --container-on-secondary: #333333;
 
   /* Accent. */
-  --accent-primary: #5FA145;         /* Core green. */
-  --accent-secondary: #91c181;       /* Lighter green for hovers, borders. */
+  --accent-primary: #8da259;         /* Core green. */
+  --accent-secondary: #869365;       /* Lighter green for hovers, borders. */
   --on-accent: #ffffff;              /* White text on green. */
 
   /* Typography. */

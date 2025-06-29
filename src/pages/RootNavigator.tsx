@@ -9,12 +9,12 @@ import SidebarLayout from "../components/sidebar-layout/SideBarLayout";
 import NavigationRail from "../components/navigation-rail/NavigationRail";
 import Logo from "../components/logo/Logo";
 import InfoFooter from "../components/info-footer/InfoFooter";
-import ExerciseList from "../components/exercise-list/ExerciseList";
+import PageList from "../components/page-list/PageList";
 
 import PageExercise0 from "./exercises/PageExercise0";
 
 type SidebarRailProps = {
-  selectedTaskId: string;
+  selectedPageId: string;
   exercises: PageWithExercise[];
   onExerciseSelected: (exercise: PageWithExercise) => void;
 };
@@ -24,9 +24,10 @@ function SidebarRail(props: SidebarRailProps) {
     <NavigationRail
       header={<Logo />}
       footer={<InfoFooter />}>
-        <ExerciseList
-          exercises={props.exercises}
-          onExerciseSelected={props.onExerciseSelected}/>
+        <PageList
+          selectedPageId={props.selectedPageId}
+          pages={props.exercises}
+          onPageSelected={props.onExerciseSelected}/>
     </NavigationRail>
   );
 }
@@ -48,7 +49,7 @@ function RootNavigator() {
       <SidebarLayout
         sidebar={
           <SidebarRail
-            selectedTaskId={selectedExerciseTaskId}
+            selectedPageId={selectedExerciseTaskId}
             exercises={Object.values(exercises)}
             onExerciseSelected={onExerciseSelected} />
         }

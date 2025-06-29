@@ -1,13 +1,17 @@
 import "./Sandbox.css";
+import IconFloppyFill from "../../assets/ic-floppy-fill.svg";
 
 import { useMemo, useState } from "react";
 
+import Button from "../button/Button";
+
 type SandboxProps = {
     initialLinesCount: number;
-    onValueChange: (value: string) => void;
     placeholder?: string;
     name?: string;
     value?: string;
+    onSaveClicked?: (value: string) => void;
+    onValueChanged?: (value: string) => void;
 };
 
 function Sandbox(props: SandboxProps) {
@@ -34,10 +38,17 @@ function Sandbox(props: SandboxProps) {
                 placeholder={props.placeholder}
                 onChange={e => {
                     setValue(e.target.value);
-                    props.onValueChange(e.target.value);
+                    props.onValueChanged?.(e.target.value);
                 }}
                 wrap="off"
             />
+            <div className="save-button">
+                <Button
+                    leftIcon={IconFloppyFill}
+                    text="Save"
+                    variant="secondary"
+                    onClick={() => props.onSaveClicked?.(value)} />
+            </div>
         </div>
     );
 }

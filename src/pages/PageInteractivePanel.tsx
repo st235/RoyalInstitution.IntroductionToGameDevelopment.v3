@@ -22,13 +22,8 @@ type PageInteractivePanelProps = {
 
 function PageInteractivePanel(props: PageInteractivePanelProps) {
     const dispatch = useAppDispatch();
-    const [sandboxValue, setSandboxValue] = useState(props.sandbox ?? "");
 
-    function onSandboxValueChanged(value: string) {
-        setSandboxValue(value);
-    }
-
-    function onSaveClick() {
+    function onSaveClicked(sandboxValue: string) {
         if (sandboxValue?.length > 0) {
             dispatch(updateSandbox(sandboxValue));
             dispatch(completeExercise(props.page.id));
@@ -39,9 +34,9 @@ function PageInteractivePanel(props: PageInteractivePanelProps) {
     return (
         <div className="page-interactive-panel">
             <ExerciseCard ordinal={props.page.ordinal} title={props.page.title} description={props.page.description} />
-            <Sandbox value={props.sandbox} placeholder={props.sandboxPlaceholder} initialLinesCount={10} onValueChange={onSandboxValueChanged} />
+            <Sandbox value={props.sandbox} placeholder={props.sandboxPlaceholder} initialLinesCount={10} onSaveClicked={onSaveClicked} />
             <div className="control-panel">
-                <Button leftIcon={IconFloppyFill} text="Save" variant="secondary" onClick={onSaveClick} />
+                {/* <Button leftIcon={IconFloppyFill} text="Save" variant="secondary" onClick={onSaveClick} /> */}
             </div>
         </div>
     );

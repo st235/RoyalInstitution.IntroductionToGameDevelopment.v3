@@ -1,18 +1,19 @@
 import Phaser from "phaser";
 
-import Snake from "./Snake";
+import { GenerateGridCoordinates } from "./PlacementUtil";
 import FoodItem from "./FoodItem";
+import GameMap from "./GameMap";
+import ObstaclesGroup from "./ObstaclesGroup";
+import Snake from "./Snake";
 
 const _SNAKE_MOVE_TIME_MS = 100;
 
 type MainSceneConfig = {
-    rows: number;
-    columns: number;
+    map: GameMap;
 }
 
 class MainScene extends Phaser.Scene {
-    _desiredRows: number;
-    _desiredColumns: number;
+    _map: GameMap;
 
     _isRunning: boolean;
     _lastUpdateTime: number;
@@ -20,17 +21,22 @@ class MainScene extends Phaser.Scene {
 
     _cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
 
+    // Game properties.
     _snake?: Snake;
     _foodItem?: FoodItem;
+    _obstacles?: ObstaclesGroup;
     _scoreText?: Phaser.GameObjects.Text;
 
     constructor() {
         super();
+        this._map = new GameMap(0, 0, []);
+        this._isRunning = false;
+        this._lastUpdateTime = 0;
+        this._currentScore = 0;
     }
 
     init(data: MainSceneConfig) {
-        this._desiredRows = data.rows;
-        this._desiredColumns = data.columns;
+        this._map = data.map;
 
         this._isRunning = false;
         this._lastUpdateTime = 0;
@@ -48,18 +54,19 @@ class MainScene extends Phaser.Scene {
         const viewportWidth = Number(this.game.config.width);
         const viewportHeight = Number(this.game.config.height);
 
-        const segmentWidth = viewportWidth / this._desiredColumns;
-        const segmentHeight = viewportHeight / this._desiredRows;
+        const segmentWidth = viewportWidth / this._map.getColumns();
+        const segmentHeight = viewportHeight / this._map.getRows();
 
+        const [ snakeI, snakeJ ] = GenerateGridCoordinates(this._map, undefined);
         this._snake = new Snake(this,
-            Phaser.Math.Between(0, this._desiredRows),
-            Phaser.Math.Between(0, this._desiredColumns),
+            snakeI, snakeJ,
             segmentWidth, segmentHeight,
-            this._desiredRows, this._desiredColumns);
+            this._map.getRows(), this._map.getColumns());
 
         this._foodItem = new FoodItem(this, segmentWidth, segmentHeight);
-        this._foodItem.place(this._snake.bodyCoordinates(),
-            this._desiredRows, this._desiredColumns);
+        this._foodItem.place(this._map, this._snake.bodyCoordinates());
+
+        this._obstacles = new ObstaclesGroup(this, segmentWidth, segmentHeight, this._map);
 
         this._scoreText = this.add.text(viewportWidth - 220, 20, "Score: 0")
             .setFontSize(32)
@@ -78,6 +85,7 @@ class MainScene extends Phaser.Scene {
 
         const snake = this._snake!;
         const foodItem = this._foodItem!;
+        const obstacles = this._obstacles!;
         const scoreText = this._scoreText!;
 
         if (cursors.right.isDown) {
@@ -98,7 +106,7 @@ class MainScene extends Phaser.Scene {
 
             if (snake.checkCollisionWith(foodItem.i!, foodItem.j!)) {
                 snake.grow();
-                foodItem.place(snakeOccupiedPoints, this._desiredRows, this._desiredColumns);
+                foodItem.place(this._map, snakeOccupiedPoints);
                 this._currentScore += foodItem.score;
                 
                 scoreText.setText("Score: " + this._currentScore);
@@ -110,6 +118,10 @@ class MainScene extends Phaser.Scene {
                         this._isRunning = false;
                     }
                 }
+            }
+
+            if (obstacles.doesCollide(snake)) {
+                this._isRunning = false;
             }
         }
     }

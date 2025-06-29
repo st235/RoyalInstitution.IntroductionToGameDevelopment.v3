@@ -6,6 +6,7 @@ import IconReload from "../assets/ic-reload.svg";
 import React, { useEffect, useLayoutEffect, useState, useRef } from "react";
 import Phaser from "phaser";
 
+import GameMap from "./logic/GameMap";
 import StartGame from "./StartGame";
 import { EventBus } from "./EventBus";
 import Button from "../components/button/Button";
@@ -23,9 +24,8 @@ type PhaserGameProps = {
         height: number;
     };
     game: {
-        rows: number;
-        columns: number;
-    };
+        map: GameMap;
+    }
     ref: React.RefObject<PhaserGameRef>;
     state?: PhaserGameState;
     onSceneReady?: (scene: Phaser.Scene) => void;

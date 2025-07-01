@@ -3,19 +3,17 @@ import { useEffect, useState } from "react";
 import { SaveToLocalStorage, ReadFromLocalStorage } from "../utils/LocalStorageUtil";
 
 export const useLocalStorageState = <T>(key: string, initialState: T): [T, (value: T) => void] => {
-  const [value, setValueInternally] = useState<T>(initialState)
+  const [value, setValue] = useState<T>(() => {
+    const localValue = ReadFromLocalStorage<T>(key);
+    if (!localValue) {
+      return initialState;
+    }
+    return localValue;
+  });
 
   useEffect(() => {
-    const localValue = ReadFromLocalStorage<T>(key);
-    if (localValue) {
-      setValueInternally(localValue);
-    }
-  }, [key]);
+    SaveToLocalStorage<T>(key, value);
+  }, [key, value]);
 
-  const setValue = (newValue: T) => {
-    SaveToLocalStorage<T>(key, newValue);
-    setValueInternally(newValue);
-  }
-
-  return [ value, setValue ];
+  return [value, setValue];
 };

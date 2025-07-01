@@ -17,7 +17,11 @@ function PageInteractivePanel(props: PageInteractivePanelProps) {
     return (
         <div className="page-interactive-panel">
             <ExerciseCard ordinal={props.page.ordinal} title={props.page.title} description={props.page.description} />
-            <Sandbox value={props.sandbox} placeholder={props.sandboxPlaceholder} initialLinesCount={10} onSaveClicked={props.onSaveSandbox} />
+            <Sandbox value={props.sandbox}
+                placeholder={props.sandboxPlaceholder}
+                minLines={8}
+                extraLinesOffset={2}
+                onSaveClicked={props.onSaveSandbox} />
         </div>
     );
 }

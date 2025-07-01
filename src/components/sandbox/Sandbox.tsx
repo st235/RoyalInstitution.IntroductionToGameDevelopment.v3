@@ -6,10 +6,11 @@ import { useMemo, useState } from "react";
 import Button from "../button/Button";
 
 type SandboxProps = {
-    initialLinesCount: number;
     placeholder?: string;
     name?: string;
     value?: string;
+    minLines: number;
+    extraLinesOffset?: number;
     onSaveClicked?: (value: string) => void;
     onValueChanged?: (value: string) => void;
 };
@@ -18,19 +19,23 @@ function Sandbox(props: SandboxProps) {
     const [value, setValue] = useState(props.value ?? "");
 
     const lineCount = useMemo(() => {
-        let count = Math.max(props.initialLinesCount, value.split("\n").length);
-        if (props.placeholder) {
-            count = Math.max(count, props.placeholder?.split("\n").length);
+        const extraLinesOffset = props.extraLinesOffset ?? 0;
+        let count = props.minLines;
+
+        if (value && value.length > 0) {
+            count = Math.max(count, value.split("\n").length + extraLinesOffset);
+        } else if (props.placeholder) {
+            count = Math.max(count, props.placeholder?.split("\n").length + extraLinesOffset);
         }
 
         return count;
-    }, [props. placeholder, props.initialLinesCount, value]);
+    }, [props.placeholder, props.minLines, props.extraLinesOffset, value]);
 
     const linesArray = useMemo(() =>
             Array.from(
                 { length: lineCount },
                 (_, i) => i + 1
-            ), [lineCount, props.initialLinesCount]);
+            ), [lineCount, props.minLines]);
 
     return (
         <div className="sandbox-wrapper">

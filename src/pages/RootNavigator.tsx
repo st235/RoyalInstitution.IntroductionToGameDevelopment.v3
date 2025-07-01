@@ -11,7 +11,7 @@ import Logo from "../components/logo/Logo";
 import InfoFooter from "../components/info-footer/InfoFooter";
 import PageList from "../components/page-list/PageList";
 
-import Overlay from "./overlay/Overlay";
+import MinScreenSizeOverlay from "./min-screen-size-overlay/MinScreenSizeOverlay";
 import PageExercise0 from "./exercises/PageExercise0";
 import PageExercise1 from "./exercises/PageExercise1";
 
@@ -48,7 +48,7 @@ function RootNavigator() {
 
   return (
     <div id="root-navigator">
-      <Overlay />
+      <MinScreenSizeOverlay />
       <SidebarLayout
         sidebar={
           <SidebarRail

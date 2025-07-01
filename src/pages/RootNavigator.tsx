@@ -2,8 +2,8 @@ import "./RootNavigator.css";
 
 import type { PageWithExercise } from "../types/Page";
 
-import { useState } from "react";
 import { useAppSelector } from "../hooks/redux";
+import { useLocalStorageState } from "../hooks/useLocalStorage";
 
 import SidebarLayout from "../components/sidebar-layout/SideBarLayout";
 import NavigationRail from "../components/navigation-rail/NavigationRail";
@@ -17,8 +17,8 @@ import PageExercise1 from "./exercises/PageExercise1";
 
 type SidebarRailProps = {
   selectedPageId: string;
-  exercises: PageWithExercise[];
-  onExerciseSelected: (exercise: PageWithExercise) => void;
+  pages: PageWithExercise[];
+  onPageSelected: (page: PageWithExercise) => void;
 };
 
 function SidebarRail(props: SidebarRailProps) {
@@ -28,22 +28,22 @@ function SidebarRail(props: SidebarRailProps) {
       footer={<InfoFooter />}>
         <PageList
           selectedPageId={props.selectedPageId}
-          pages={props.exercises}
-          onPageSelected={props.onExerciseSelected}/>
+          pages={props.pages}
+          onPageSelected={props.onPageSelected}/>
     </NavigationRail>
   );
 }
 
 function RootNavigator() {
-  const exercises = useAppSelector(state => state.exercise.pages);
-  const [selectedExerciseTaskId, setSelectedExerciseTaskId] = useState<string>("1");
+  const pages = useAppSelector(state => state.exercise.pages);
+  const [selectedPageId, setSelectedPageId] = useLocalStorageState<string>("root.selected-page", "1");
 
-  function onExerciseSelected(e: PageWithExercise) {
-    if (e.state == "locked" || e.id == selectedExerciseTaskId) {
+  function onPageSelected(e: PageWithExercise) {
+    if (e.state == "locked" || e.id == selectedPageId) {
       return;
     }
 
-    setSelectedExerciseTaskId(e.id);
+    setSelectedPageId(e.id);
   }
 
   return (
@@ -52,13 +52,13 @@ function RootNavigator() {
       <SidebarLayout
         sidebar={
           <SidebarRail
-            selectedPageId={selectedExerciseTaskId}
-            exercises={Object.values(exercises)}
-            onExerciseSelected={onExerciseSelected} />
+            selectedPageId={selectedPageId}
+            pages={Object.values(pages)}
+            onPageSelected={onPageSelected} />
         }
       >
-        {selectedExerciseTaskId === "1" && <PageExercise0 page={exercises[selectedExerciseTaskId]} />}
-        {selectedExerciseTaskId === "2" && <PageExercise1 page={exercises[selectedExerciseTaskId]} />}
+        {selectedPageId === "1" && <PageExercise0 page={pages[selectedPageId]} />}
+        {selectedPageId === "2" && <PageExercise1 page={pages[selectedPageId]} />}
       </SidebarLayout>
     </div>
   )

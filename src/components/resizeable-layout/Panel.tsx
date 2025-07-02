@@ -13,13 +13,11 @@ export default function Panel(props: PanelProps) {
     const cssProps = {
         width: props.overwriteWidth,
         minWidth: props.minWidth,
-        flexShrink: 0,
-        flexBasis: 'auto',
+        flex: "1 0 auto",
     } as React.CSSProperties;
 
     if (!props.overwriteWidth) {
-        cssProps.flexGrow = props.defaultWeight;
-        cssProps.flexBasis = 0;
+        cssProps.flex = `${props.defaultWeight} 0 0`;
     }
 
     return (

@@ -13,7 +13,7 @@ import GameMap from "../../game/logic/GameMap";
 import PageInteractivePanel from "../PageInteractivePanel";
 import PanelsLayout from "../../components/resizeable-layout/PanelsLayout";
 
-import PhaserGame, { type PhaserGameRef } from "../../game/PhaserGame";
+import PhaserGame, { type PhaserGameRef } from "../../game/PhaserGameContainer";
 
 type PageExercise0Props = {
     page: PageWithExercise;

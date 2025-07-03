@@ -1,4 +1,4 @@
-import "./PhaserGame.css";
+import "./PhaserGameContainer.css";
 import IconPlay from "../assets/ic-play-circle.svg";
 import IconPause from "../assets/ic-pause-circle.svg";
 import IconReload from "../assets/ic-reload.svg";
@@ -11,14 +11,14 @@ import StartGame from "./StartGame";
 import { EventBus } from "./EventBus";
 import Button from "../components/button/Button";
 
-type PhaserGameState = "running" | "paused";
+type PhaserGameContainerState = "running" | "paused";
 
-type PhaserGameRef = {
+type PhaserGameContainerRef = {
     game: Phaser.Game;
     activeScene: Phaser.Scene | null;
 } | null;
 
-type PhaserGameProps = {
+type PhaserGameContainerProps = {
     viewport: {
         width: number;
         height: number;
@@ -26,16 +26,16 @@ type PhaserGameProps = {
     game: {
         map: GameMap;
     }
-    ref: React.RefObject<PhaserGameRef>;
-    state?: PhaserGameState;
+    ref: React.RefObject<PhaserGameContainerRef>;
+    state?: PhaserGameContainerState;
     onSceneReady?: (scene: Phaser.Scene) => void;
 };
 
-function PhaserGame(props: PhaserGameProps) {
+function PhaserGameContainer(props: PhaserGameContainerProps) {
     const ref = props.ref;
 
     const game = useRef<Phaser.Game>(null);
-    const [gameState, setGameState] = useState<PhaserGameState>(props.state ?? "paused");
+    const [gameState, setGameState] = useState<PhaserGameContainerState>(props.state ?? "paused");
 
     function _PauseGame() {
         const gameRef = ref.current;
@@ -139,5 +139,5 @@ function PhaserGame(props: PhaserGameProps) {
     );
 }
 
-export default PhaserGame;
-export type { PhaserGameState, PhaserGameRef, PhaserGameProps };
+export default PhaserGameContainer;
+export type { PhaserGameContainerState, PhaserGameContainerRef, PhaserGameContainerProps };

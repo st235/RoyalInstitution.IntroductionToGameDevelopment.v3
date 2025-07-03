@@ -1,21 +1,25 @@
 import Phaser from "phaser";
 
 import { GenerateGridCoordinates } from "./PlacementUtil";
+import CountDownTimer from "./CountDownTimer";
 import FoodItem from "./FoodItem";
 import GameMap from "./GameMap";
 import ObstaclesGroup from "./ObstaclesGroup";
 import Snake from "./Snake";
 
+const _MAIN_SCENE_STARTING_MS = 3_000;
 const _SNAKE_MOVE_TIME_MS = 100;
+
+type MainSceneState = "idling" | "starting" | "running" | "finished";
 
 type MainSceneConfig = {
     map: GameMap;
-}
+};
 
 class MainScene extends Phaser.Scene {
     _map: GameMap;
 
-    _isRunning: boolean;
+    _state: MainSceneState;
     _lastUpdateTime: number;
     _currentScore: number;
 
@@ -27,10 +31,15 @@ class MainScene extends Phaser.Scene {
     _obstacles?: ObstaclesGroup;
     _scoreText?: Phaser.GameObjects.Text;
 
+    // Countdown.
+    _countdownTimer: CountDownTimer;
+    _countdownText?: Phaser.GameObjects.Text;
+
     constructor() {
         super();
         this._map = new GameMap(0, 0, []);
-        this._isRunning = false;
+        this._countdownTimer = new CountDownTimer();
+        this._state = "idling";
         this._lastUpdateTime = 0;
         this._currentScore = 0;
     }
@@ -38,16 +47,33 @@ class MainScene extends Phaser.Scene {
     init(data: MainSceneConfig) {
         this._map = data.map;
 
-        this._isRunning = false;
+        this._state = "idling";
         this._lastUpdateTime = 0;
         this._currentScore = 0;
     }
 
     preload() {
-        this._isRunning = true;
+        this._state = "starting";
         this._cursors = this.input.keyboard?.createCursorKeys();
         this._lastUpdateTime = 0;
         this._currentScore = 0;
+
+        // Start countdown.
+        this._countdownTimer.setOnTickListener((remainingTimeMs) => {
+            const countdownText = this._countdownText;
+            if (countdownText) {
+                const remainingSeconds = Math.ceil(remainingTimeMs / 1_000);
+                countdownText.setText(remainingSeconds.toString());
+            }
+        });
+
+        this._countdownTimer.start(_MAIN_SCENE_STARTING_MS, 1_000, () => {
+            this._state = "running";
+            const countdownText = this._countdownText;
+            if (countdownText) {
+                countdownText.setVisible(false);
+            }
+        });
     }
 
     create() {
@@ -72,12 +98,21 @@ class MainScene extends Phaser.Scene {
             .setFontSize(32)
             .setDepth(10);
 
+        this._countdownText = this.add.text(viewportWidth / 2, viewportHeight / 2, _MAIN_SCENE_STARTING_MS.toString())
+            .setFontSize(64);
+
         this.add.existing(this._snake);
         this.add.existing(this._foodItem);
     }
 
-    update(time: number) {
-        if (!this._isRunning) {
+    update(time: number, dt: number) {
+        if (this._state !== "starting"
+            && this._state !== "running") {
+            return;
+        }
+
+        if (this._state === "starting") {
+            this._countdownTimer.update(dt);
             return;
         }
 
@@ -115,13 +150,13 @@ class MainScene extends Phaser.Scene {
             for (const row in snakeOccupiedPoints) {
                 for (const column in snakeOccupiedPoints[row]) {
                     if (snakeOccupiedPoints[row][column] > 1) {
-                        this._isRunning = false;
+                        this._state = "finished";
                     }
                 }
             }
 
             if (obstacles.doesCollide(snake)) {
-                this._isRunning = false;
+                this._state = "finished";
             }
         }
     }

@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 
 const _SEGMENT_COLOUR = 0x2e2e2e;
+const _SEGMENT_PADDING_PX = 2;
 
 class SnakeSegment extends Phaser.GameObjects.Rectangle {
     i: number;
@@ -12,7 +13,7 @@ class SnakeSegment extends Phaser.GameObjects.Rectangle {
         super(scene,
             /* x= */ j * width + width / 2,
             /* y= */ i * height + height / 2,
-            width, height,
+            width - 2 * _SEGMENT_PADDING_PX, height - 2 * _SEGMENT_PADDING_PX,
             /* color= */ _SEGMENT_COLOUR);
 
         this.i = i;

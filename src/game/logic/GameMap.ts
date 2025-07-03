@@ -2,15 +2,21 @@ type CellType = "unoccupied" | "obstacle";
 type CellTexture<T> = Array<Array<T>>;
 
 class GameMap {
-    readonly _rows: number;
-    readonly _columns: number;
-    readonly _cellTypes: Array<CellType>;
+    private readonly _rows: number;
+    private readonly _columns: number;
+    private readonly _initialSnakePosition?: [number, number];
+    private readonly _initialFoodPosition?: [number, number];
+    private readonly _cellTypes: Array<CellType>;
 
     constructor(rows: number,
                 columns: number,
-                obstaclesTexture: CellTexture<boolean>) {
+                obstaclesTexture: CellTexture<boolean>,
+                initialSnakePosition?: [number, number],
+                initialFoodPosition?: [number, number],) {
         this._rows = rows;
         this._columns = columns;
+        this._initialSnakePosition = initialSnakePosition;
+        this._initialFoodPosition = initialFoodPosition;
 
         this._cellTypes = Array<CellType>(this._rows * this._columns);
         for (let i = 0; i < this._rows; i++) {
@@ -34,6 +40,14 @@ class GameMap {
 
     getColumns(): number {
         return this._columns;
+    }
+
+    getInitialSnakePosition(): [number, number] | undefined {
+        return this._initialSnakePosition;
+    }
+
+    getInitialFoodPosition(): [number, number] | undefined {
+        return this._initialFoodPosition;
     }
 
     getType(i: number, j: number): CellType {
@@ -61,14 +75,28 @@ class GameMap {
         }
 
         // Empty and obstacle symbols.
-        const [_, obstacle] = lines[1].split(",");
+        const [_, obstacle, snake, food] = lines[1].split(",");
+
+        let initialSnakePosition: [number, number] | undefined = undefined;
+        let initialFoodPosition: [number, number] | undefined = undefined;
 
         const obstaclesMap = new Array<Array<boolean>>();
         for (let ri = 2; ri < lines.length; ri++) {
-            obstaclesMap.push(lines[ri].split('').map(c => c === obstacle));
+            const row = lines[ri].split('');
+            obstaclesMap.push(row.map(c => c === obstacle));
+
+            const snakeJ = row.findIndex(c => c === snake);
+            if (snakeJ != -1) {
+                initialSnakePosition = [ri, snakeJ];
+            }
+
+            const foodJ = row.findIndex(c => c === food);
+            if (foodJ != -1) {
+                initialFoodPosition = [ri, foodJ];
+            }
         }
 
-        return new GameMap(rows, columns, obstaclesMap);
+        return new GameMap(rows, columns, obstaclesMap, initialSnakePosition, initialFoodPosition);
     }
 }
 

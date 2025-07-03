@@ -8,16 +8,20 @@ import ObstaclesGroup from "./ObstaclesGroup";
 import Snake from "./Snake";
 
 const _MAIN_SCENE_STARTING_MS = 3_000;
-const _SNAKE_MOVE_TIME_MS = 100;
+const _DEFAULT_SCENE_UPDATE_THRESHOLD_MS = 150;
 
 type MainSceneState = "idling" | "starting" | "running" | "finished";
 
 type MainSceneConfig = {
     map: GameMap;
+    sceneUpdateMs?: number;
+    onFoodItemConsumed?: (score: number) => void;
 };
 
 class MainScene extends Phaser.Scene {
-    _map: GameMap;
+    private _map: GameMap;
+    private _sceneUpdateThresholdMs: number;
+    private _onFoodItemConsumed?: (score: number) => void;
 
     _state: MainSceneState;
     _lastUpdateTime: number;
@@ -38,6 +42,7 @@ class MainScene extends Phaser.Scene {
     constructor() {
         super();
         this._map = new GameMap(0, 0, []);
+        this._sceneUpdateThresholdMs = _DEFAULT_SCENE_UPDATE_THRESHOLD_MS;
         this._countdownTimer = new CountDownTimer();
         this._state = "idling";
         this._lastUpdateTime = 0;
@@ -46,6 +51,8 @@ class MainScene extends Phaser.Scene {
 
     init(data: MainSceneConfig) {
         this._map = data.map;
+        this._sceneUpdateThresholdMs = data.sceneUpdateMs ?? _DEFAULT_SCENE_UPDATE_THRESHOLD_MS;
+        this._onFoodItemConsumed = data.onFoodItemConsumed;
 
         this._state = "idling";
         this._lastUpdateTime = 0;
@@ -83,14 +90,16 @@ class MainScene extends Phaser.Scene {
         const segmentWidth = viewportWidth / this._map.getColumns();
         const segmentHeight = viewportHeight / this._map.getRows();
 
-        const [ snakeI, snakeJ ] = GenerateGridCoordinates(this._map, undefined);
+        const [ snakeI, snakeJ ] = this._map.getInitialSnakePosition() ??
+            GenerateGridCoordinates(this._map, undefined);
         this._snake = new Snake(this,
             snakeI, snakeJ,
             segmentWidth, segmentHeight,
             this._map.getRows(), this._map.getColumns());
 
         this._foodItem = new FoodItem(this, segmentWidth, segmentHeight);
-        this._foodItem.place(this._map, this._snake.bodyCoordinates());
+        this._foodItem.place(this._map, this._snake.bodyCoordinates(),
+            this._map.getInitialFoodPosition());
 
         this._obstacles = new ObstaclesGroup(this, segmentWidth, segmentHeight, this._map);
 
@@ -133,7 +142,7 @@ class MainScene extends Phaser.Scene {
             snake.faceDown();
         }
 
-        if (time - this._lastUpdateTime > _SNAKE_MOVE_TIME_MS) {
+        if (time - this._lastUpdateTime > this._sceneUpdateThresholdMs) {
             this._lastUpdateTime = time;
             snake.move();
 
@@ -143,7 +152,8 @@ class MainScene extends Phaser.Scene {
                 snake.grow();
                 foodItem.place(this._map, snakeOccupiedPoints);
                 this._currentScore += foodItem.score;
-                
+                this._onFoodItemConsumed?.(this._currentScore);
+
                 scoreText.setText("Score: " + this._currentScore);
             }
 

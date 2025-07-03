@@ -29,8 +29,10 @@ class FoodItem extends Phaser.GameObjects.Star {
         this.score = score;
     }
 
-    place(map: GameMap, snakeBodyPoints: { [Key: number]: { [Key: number]: number } }) {
-        const newFoodItemPosition = GenerateGridCoordinates(map, snakeBodyPoints);
+    place(map: GameMap,
+          snakeBodyPoints: { [Key: number]: { [Key: number]: number } },
+          atSpecificPosition?: [number, number]) {
+        const newFoodItemPosition = atSpecificPosition ?? GenerateGridCoordinates(map, snakeBodyPoints);
         const [ni, nj] = newFoodItemPosition;
 
         this.i = ni;

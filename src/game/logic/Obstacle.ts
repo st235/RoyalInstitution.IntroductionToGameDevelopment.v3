@@ -13,7 +13,8 @@ class Obstacle extends Phaser.GameObjects.Rectangle {
             /* x= */ j * width + width / 2,
             /* y= */ i * height + height / 2,
             width, height,
-            /* color= */ _OBSTACLE_COLOUR);
+            /* color= */ _OBSTACLE_COLOUR,
+            0.85);
 
         this.i = i;
         this.j = j;

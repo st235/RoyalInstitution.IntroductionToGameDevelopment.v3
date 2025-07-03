@@ -3,7 +3,7 @@ import Phaser from "phaser";
 import { GenerateGridCoordinates } from "./PlacementUtil";
 import GameMap from "./GameMap";
 
-const _FOOD_COLOUR = 0x2e2e2e;
+const _FOOD_COLOUR = 0xEFD631;
 const _DEFAULT_CONSUMPTION_SCORE = 10;
 
 class FoodItem extends Phaser.GameObjects.Star {

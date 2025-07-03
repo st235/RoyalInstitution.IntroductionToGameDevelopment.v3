@@ -1,6 +1,6 @@
 import "./PageList.css";
 import IconLock from "../../assets/ic-lock-fill.svg";
-import IconCheckLg from "../../assets/ic-check-lg.svg";
+import IconCheck from "../../assets/ic-check-circle.svg";
 
 import { type PageWithExercise } from "../../types/Page";
 import IconButton from "../icon-button/IconButton";
@@ -22,7 +22,7 @@ function PageList(props: PageListProps) {
 
                 if (page.state === "completed") {
                     variant = "accent";
-                    icon = IconCheckLg;
+                    icon = IconCheck;
                 } else if (page.state == "locked") {
                     variant = "secondary";
                     icon = IconLock;

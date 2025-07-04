@@ -1,13 +1,17 @@
 import Phaser from "phaser";
 
+import type { MovementDirection } from "./movement-controller/SnakeMovementController";
+
 import { GenerateGridCoordinates } from "./PlacementUtil";
 import CountDownTimer from "./CountDownTimer";
 import DefaultMetaLoopAdancer from "./loop/DefaultMetaLoopAdvancer";
 import FoodItem from "./FoodItem";
 import GameMap from "./GameMap";
+import KeyboardDrivenMovementController from "./movement-controller/KeyboardDrivenMovementController";
 import MetaLoopAdvancer from "./loop/MetaLoopAdvancer";
 import ObstaclesGroup from "./ObstaclesGroup";
 import Snake from "./Snake";
+import SnakeMovementController from "./movement-controller/SnakeMovementController";
 
 const _MAIN_SCENE_STARTING_MS = 3_000;
 
@@ -16,18 +20,20 @@ type MainSceneState = "idling" | "starting" | "running" | "finished";
 type MainSceneConfig = {
     map: GameMap;
     metaLoopAdancer?: MetaLoopAdvancer;
+    movementController?: SnakeMovementController;
     onFoodItemConsumed?: (score: number) => void;
+    onGameFinished?: (finalScore: number) => void;
 };
 
 class MainScene extends Phaser.Scene {
     private _map: GameMap;
     private _metaLoopAdancer: MetaLoopAdvancer;
+    private _movementController?: SnakeMovementController;
     private _onFoodItemConsumed?: (score: number) => void;
+    private _onGameFinished?: (finalScore: number) => void;
 
     _state: MainSceneState;
     _currentScore: number;
-
-    _cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
 
     // Game properties.
     _snake?: Snake;
@@ -39,10 +45,14 @@ class MainScene extends Phaser.Scene {
     _countdownTimer: CountDownTimer;
     _countdownText?: Phaser.GameObjects.Text;
 
+    // Game over.
+    _gameOverText?: Phaser.GameObjects.Text;
+
     constructor() {
         super();
         this._map = new GameMap(0, 0, []);
         this._metaLoopAdancer = DefaultMetaLoopAdancer.create();
+
         this._countdownTimer = new CountDownTimer();
         this._state = "idling";
         this._currentScore = 0;
@@ -53,7 +63,13 @@ class MainScene extends Phaser.Scene {
         if (data.metaLoopAdancer) {
             this._metaLoopAdancer = data.metaLoopAdancer;
         }
+        if (data.movementController) {
+            this._movementController = data.movementController;
+        } else {
+            this._movementController = KeyboardDrivenMovementController.create(this);
+        }
         this._onFoodItemConsumed = data.onFoodItemConsumed;
+        this._onGameFinished = data.onGameFinished;
 
         this._state = "idling";
         this._currentScore = 0;
@@ -61,7 +77,6 @@ class MainScene extends Phaser.Scene {
 
     preload() {
         this._state = "starting";
-        this._cursors = this.input.keyboard?.createCursorKeys();
         this._currentScore = 0;
 
         // Start countdown.
@@ -97,7 +112,7 @@ class MainScene extends Phaser.Scene {
             this._map.getRows(), this._map.getColumns());
 
         this._foodItem = new FoodItem(this, segmentWidth, segmentHeight);
-        this._foodItem.place(this._map, this._snake.bodyCoordinates(),
+        this._foodItem.place(this._map, this._snake.getSegmentsCoordinates(),
             this._map.getInitialFoodPosition());
 
         this._obstacles = new ObstaclesGroup(this, segmentWidth, segmentHeight, this._map);
@@ -108,6 +123,13 @@ class MainScene extends Phaser.Scene {
 
         this._countdownText = this.add.text(viewportWidth / 2, viewportHeight / 2, _MAIN_SCENE_STARTING_MS.toString())
             .setFontSize(64)
+            .setOrigin(0.5, 0.5)
+            .setDepth(10);
+
+        this._gameOverText = this.add.text(viewportWidth / 2, viewportHeight / 2, "Game over")
+            .setFontSize(36)
+            .setVisible(false)
+            .setOrigin(0.5, 0.5)
             .setDepth(10);
 
         this.add.existing(this._snake);
@@ -125,49 +147,63 @@ class MainScene extends Phaser.Scene {
             return;
         }
 
-        const cursors = this._cursors!;
-
         const snake = this._snake!;
         const foodItem = this._foodItem!;
         const obstacles = this._obstacles!;
         const scoreText = this._scoreText!;
 
-        if (cursors.right.isDown) {
-            snake.faceRight();
-        } else if (cursors.up.isDown) {
-            snake.faceUp();
-        } else if (cursors.left.isDown) {
-            snake.faceLeft();
-        } else if (cursors.down.isDown) {
-            snake.faceDown();
-        }
+        this._movementController?.onUpdate(dt);
 
         if (this._metaLoopAdancer.shouldAdvance(time)) {
-            snake.move();
-
-            const snakeOccupiedPoints = snake.bodyCoordinates();
-
-            if (snake.checkCollisionWith(foodItem.i!, foodItem.j!)) {
-                snake.grow();
-                foodItem.place(this._map, snakeOccupiedPoints);
-                this._currentScore += foodItem.score;
-                this._onFoodItemConsumed?.(this._currentScore);
-
-                scoreText.setText("Score: " + this._currentScore);
+            const movementDirection = this._movementController?.getMovementDirection();
+            if (movementDirection === "right") {
+                snake.faceRight();
+            } else if (movementDirection === "up") {
+                snake.faceUp();
+            } else if (movementDirection === "left") {
+                snake.faceLeft();
+            } else if (movementDirection === "down") {
+                snake.faceDown();
             }
 
-            for (const row in snakeOccupiedPoints) {
-                for (const column in snakeOccupiedPoints[row]) {
-                    if (snakeOccupiedPoints[row][column] > 1) {
-                        this._state = "finished";
+
+            // Pre movement checks.
+            if (obstacles.willCollideAfterMovement(snake)) {
+                this._onStop();
+                return;
+            }
+
+            // Movement.
+            snake.move();
+
+            // Post movement checks.
+            const segmentOccupiedCoordinates = snake.getSegmentsCoordinates();
+
+            for (const row in segmentOccupiedCoordinates) {
+                for (const column in segmentOccupiedCoordinates[row]) {
+                    if (segmentOccupiedCoordinates[row][column] > 1) {
+                        this._onStop();
+                        return;
                     }
                 }
             }
 
-            if (obstacles.doesCollide(snake)) {
-                this._state = "finished";
+            if (snake.checkPostMovementCollisionWith(foodItem.i!, foodItem.j!)) {
+                snake.grow();
+
+                foodItem.place(this._map, segmentOccupiedCoordinates);
+                this._currentScore += foodItem.score;
+                scoreText.setText("Score: " + this._currentScore);
+
+                this._onFoodItemConsumed?.(this._currentScore);
             }
         }
+    }
+
+    private _onStop() {
+        this._state = "finished";
+        this._gameOverText?.setVisible(true);
+        this._onGameFinished?.(this._currentScore);
     }
 };
 

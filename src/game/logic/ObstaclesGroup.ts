@@ -32,10 +32,10 @@ class ObstaclesGroup extends Phaser.GameObjects.Group {
         this.add(newSegment, true);
     }
 
-    doesCollide(snake: Snake): boolean {
+    willCollideAfterMovement(snake: Snake): boolean {
         for (const rawChild of this.children.entries) {
             const child = rawChild as Obstacle;
-            if (snake.checkCollisionWith(child.i, child.j)) {
+            if (snake.checkPreMovementCollisionWith(child.i, child.j)) {
                 return true;
             }
         };

@@ -63,7 +63,7 @@ class GameMap {
     }
 
     static fromConfigFile(value: string): GameMap {
-        const lines = value.split("\n").filter(l => l.length > 0);
+        const lines = value.trim().split("\n").filter(l => l.length > 0);
 
         if (lines.length < 1) {
             throw new Error("Config is empty.");
@@ -87,12 +87,12 @@ class GameMap {
 
             const snakeJ = row.findIndex(c => c === snake);
             if (snakeJ != -1) {
-                initialSnakePosition = [ri, snakeJ];
+                initialSnakePosition = [ri - 2, snakeJ];
             }
 
             const foodJ = row.findIndex(c => c === food);
             if (foodJ != -1) {
-                initialFoodPosition = [ri, foodJ];
+                initialFoodPosition = [ri - 2, foodJ];
             }
         }
 

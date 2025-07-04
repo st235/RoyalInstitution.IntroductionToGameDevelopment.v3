@@ -31,6 +31,10 @@ class KeyboardDrivenMovementController extends SnakeMovementController {
         return this._lastKnownMovementDirection;
     }
 
+    onStop(): void {
+        // Empty on purpose.
+    }
+
     static create(scene: Phaser.Scene): KeyboardDrivenMovementController | undefined {
         const cursors = scene.input.keyboard?.createCursorKeys();
         if (cursors) {

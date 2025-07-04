@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 
-import type { MovementDirection } from "./movement-controller/SnakeMovementController";
+import type { GameConfig } from "../GameConfig";
 
 import { GenerateGridCoordinates } from "./PlacementUtil";
 import CountDownTimer from "./CountDownTimer";
@@ -16,14 +16,6 @@ import SnakeMovementController from "./movement-controller/SnakeMovementControll
 const _MAIN_SCENE_STARTING_MS = 3_000;
 
 type MainSceneState = "idling" | "starting" | "running" | "finished";
-
-type MainSceneConfig = {
-    map: GameMap;
-    metaLoopAdancer?: MetaLoopAdvancer;
-    movementController?: SnakeMovementController;
-    onFoodItemConsumed?: (score: number) => void;
-    onGameFinished?: (finalScore: number) => void;
-};
 
 class MainScene extends Phaser.Scene {
     private _map: GameMap;
@@ -58,10 +50,10 @@ class MainScene extends Phaser.Scene {
         this._currentScore = 0;
     }
 
-    init(data: MainSceneConfig) {
+    init(data: GameConfig) {
         this._map = data.map;
-        if (data.metaLoopAdancer) {
-            this._metaLoopAdancer = data.metaLoopAdancer;
+        if (data.metaLoopAdvancer) {
+            this._metaLoopAdancer = data.metaLoopAdvancer;
         }
         if (data.movementController) {
             this._movementController = data.movementController;
@@ -166,7 +158,6 @@ class MainScene extends Phaser.Scene {
                 snake.faceDown();
             }
 
-
             // Pre movement checks.
             if (obstacles.willCollideAfterMovement(snake)) {
                 this._onStop();
@@ -201,6 +192,8 @@ class MainScene extends Phaser.Scene {
     }
 
     private _onStop() {
+        this._movementController?.onStop();
+
         this._state = "finished";
         this._gameOverText?.setVisible(true);
         this._onGameFinished?.(this._currentScore);

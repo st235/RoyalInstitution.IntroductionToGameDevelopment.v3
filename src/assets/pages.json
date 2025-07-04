@@ -14,12 +14,20 @@
             "title": "Exercise 2: Design Your Own Level",
             "description": "<p>Awesome! Now that you understand the game rules, it's time to shape the game world yourself.</p><p>In this exercise, you'll define a custom <strong>obstacle layout</strong> using a simple text configuration format. This layout will determine where the snake can move — and where it can't!</p><p>Use the following format for your configuration:</p><pre>&lt;number of rows&gt;,&lt;number of columns&gt;<br>&lt;symbol for empty cells&gt;,&lt;symbol for obstacles&gt;<br>&lt;map layout with obstacles&gt;</pre> <p><strong>Example:</strong></p> <pre>10,10<br>0,X<br>0000000000<br>00X0000000<br>0000000000<br>0000XXX000<br>0000000000<br>00X0000000<br>0000000000<br>0000000000<br>0000000000<br>0000000000</pre><p><strong>Legend:</strong></p> <ul> <li><code>0</code> = empty space (the snake can move here)</li> <li><code>X</code> = obstacle (the snake cannot move here)</li> </ul> <p><strong>Make sure:</strong></p> <ul> <li>The number of rows and columns matches your actual map layout.</li> <li>Every row contains exactly the number of columns you specified.</li> <li>You experiment with different obstacle placements to create fun or tricky paths!</li> </ul> <p>When you're done, click <strong>Save</strong> to try it out and continue to the next part.</p><p>P.S. If the game didn't load your configuration, try clicking the <strong>Restart</strong> button.</p>",
             "sandboxPlaceholder": "20,15\n0,X\n000000000000000\n000000000000000\n00XXXX00000XXXX\n000000000000000\n000000X00000000\n000000X00000000\n000000X00000000\n000000XXXXX0000\n000000000000000\n000X00000000X00\n000X00000000X00\n000XXXXX0000X00\n000000000000X00\n000000000000000\nXXXXX0000000000\n000000000000000\n000000000000000\n00XXX000000XXX0\n000000000000000\n000000000000000",
-            "shouldOpen": []
+            "shouldOpen": ["3"]
         },
         {
             "id": "3",
             "ordinal": 3,
-            "title": "Exercise 3",
+            "title": "Exercise 3: Manual maze solver",
+            "description": "<p>In this exercise, you're going to take direct control of the snake and guide it through the obstacle-filled field to reach the food!</p> <p>This time, the game is in <strong>manual advancement mode</strong> — it won’t play automatically. Instead, you will issue a series of commands and then step through each move one at a time.</p> <p><strong>How it works:</strong></p> <ul> <li>Use the <code>left</code>, <code>right</code>, <code>up</code>, and <code>down</code> commands to create your movement plan.</li> <li>Each command corresponds to one movement by the snake.</li> <li>If your command list is shorter than the number of required steps, the snake will continue repeating the <strong>last entered command</strong>.</li> <li>Click the <strong>\"Step\"</strong> button to move the snake one step forward.</li> <li>You can also use the <strong>\"Advance Automatically\"</strong> button to let the game play out the rest of your command sequence.</li> </ul> <p><strong>Goal:</strong> Reach the food item without crashing into any obstacles!</p> <p>Take your time and help the snake to reach the food item. When the snake reaches the food, you'll complete the exercise and be ready to proceed next!</p>",
+            "sandboxPlaceholder": "left\nup\nup\ndown\n…",
+            "shouldOpen": []
+        },
+        {
+            "id": "4",
+            "ordinal": 4,
+            "title": "Exercise 4",
             "description": "Hello world",
             "shouldOpen": []
         }

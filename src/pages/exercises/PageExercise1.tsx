@@ -13,7 +13,7 @@ import GameMap from "../../game/logic/GameMap";
 import PageInteractivePanel from "../PageInteractivePanel";
 import PanelsLayout from "../../components/resizeable-layout/PanelsLayout";
 
-import PhaserGame, { type PhaserGameRef } from "../../game/PhaserGameContainer";
+import PhaserGame, { type PhaserGameContainerRef } from "../../game/PhaserGameContainer";
 
 type PageExercise1Props = {
     page: PageWithExercise;
@@ -24,7 +24,7 @@ function PageExercise1(props: PageExercise1Props) {
     const sandbox = useAppSelector(state => state.pageDesignObstacles.sandbox);
     const defaultConfig = props.page.sandboxPlaceholder!;
 
-    const phaserRef = useRef<PhaserGameRef>(null);
+    const phaserRef = useRef<PhaserGameContainerRef>(null);
 
     function onSaveClicked(sandboxValue: string) {
         dispatch(updateSandbox(sandboxValue));

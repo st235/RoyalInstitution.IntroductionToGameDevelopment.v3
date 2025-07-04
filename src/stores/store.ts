@@ -2,13 +2,15 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import exerciseReducer from "../reducers/exerciseSlice";
 import pageGameAndLearnReducer from "../reducers/pages/pageGameAndLearnSlice";
-import pageDesignObstacles from "../reducers/pages/pageDesignObstacles";
+import pageDesignObstaclesReducer from "../reducers/pages/pageDesignObstacles";
+import pageSolveMazeReducer from "../reducers/pages/pageSolveMaze";
 
 export const store = configureStore({
     reducer: {
         exercise: exerciseReducer,
         pageGameAndLearn: pageGameAndLearnReducer,
-        pageDesignObstacles: pageDesignObstacles,
+        pageDesignObstacles: pageDesignObstaclesReducer,
+        pageSolveMaze: pageSolveMazeReducer,
     },
 });
 

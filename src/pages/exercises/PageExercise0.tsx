@@ -13,7 +13,7 @@ import GameMap from "../../game/logic/GameMap";
 import PageInteractivePanel from "../PageInteractivePanel";
 import PanelsLayout from "../../components/resizeable-layout/PanelsLayout";
 
-import PhaserGame, { type PhaserGameRef } from "../../game/PhaserGameContainer";
+import PhaserGame, { type PhaserGameContainerRef } from "../../game/PhaserGameContainer";
 
 type PageExercise0Props = {
     page: PageWithExercise;
@@ -23,7 +23,7 @@ function PageExercise0(props: PageExercise0Props) {
     const dispatch = useAppDispatch();
     const sandbox = useAppSelector(state => state.pageGameAndLearn.sandbox);
 
-    const phaserRef = useRef<PhaserGameRef>(null);
+    const phaserRef = useRef<PhaserGameContainerRef>(null);
 
     function onSaveClicked(sandboxValue: string) {
         if (sandboxValue?.length > 0) {

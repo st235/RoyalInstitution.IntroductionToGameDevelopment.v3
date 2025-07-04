@@ -26,14 +26,22 @@ class MovementDirectionListController extends SnakeMovementController {
         this._directionIndex = 0;
     }
 
-    static create(directions: MovementDirection[]): MovementDirectionListController | undefined {
-        for (const direction of directions) {
+    static create(rawDirections: MovementDirection[]): MovementDirectionListController | undefined {
+        const directions: MovementDirection[] = [];
+
+        for (const rawDirection of rawDirections) {
+            const [direction, repeat] = rawDirection.split(" ");
+
             if (direction !== "left" &&
                 direction !== "right" &&
                 direction !== "down" &&
                 direction !== "up") {
                     return undefined;
-                }
+            }
+
+            for (let i = 0; i < parseInt(repeat ?? "1"); i++) {
+                directions.push(direction);
+            }
         }
         return new MovementDirectionListController(directions);
     }

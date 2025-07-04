@@ -2,29 +2,29 @@ import Phaser from "phaser";
 
 import { GenerateGridCoordinates } from "./PlacementUtil";
 import CountDownTimer from "./CountDownTimer";
+import DefaultMetaLoopAdancer from "./loop/DefaultMetaLoopAdvancer";
 import FoodItem from "./FoodItem";
 import GameMap from "./GameMap";
+import MetaLoopAdvancer from "./loop/MetaLoopAdvancer";
 import ObstaclesGroup from "./ObstaclesGroup";
 import Snake from "./Snake";
 
 const _MAIN_SCENE_STARTING_MS = 3_000;
-const _DEFAULT_SCENE_UPDATE_THRESHOLD_MS = 150;
 
 type MainSceneState = "idling" | "starting" | "running" | "finished";
 
 type MainSceneConfig = {
     map: GameMap;
-    sceneUpdateMs?: number;
+    metaLoopAdancer?: MetaLoopAdvancer;
     onFoodItemConsumed?: (score: number) => void;
 };
 
 class MainScene extends Phaser.Scene {
     private _map: GameMap;
-    private _sceneUpdateThresholdMs: number;
+    private _metaLoopAdancer: MetaLoopAdvancer;
     private _onFoodItemConsumed?: (score: number) => void;
 
     _state: MainSceneState;
-    _lastUpdateTime: number;
     _currentScore: number;
 
     _cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -42,27 +42,26 @@ class MainScene extends Phaser.Scene {
     constructor() {
         super();
         this._map = new GameMap(0, 0, []);
-        this._sceneUpdateThresholdMs = _DEFAULT_SCENE_UPDATE_THRESHOLD_MS;
+        this._metaLoopAdancer = DefaultMetaLoopAdancer.create();
         this._countdownTimer = new CountDownTimer();
         this._state = "idling";
-        this._lastUpdateTime = 0;
         this._currentScore = 0;
     }
 
     init(data: MainSceneConfig) {
         this._map = data.map;
-        this._sceneUpdateThresholdMs = data.sceneUpdateMs ?? _DEFAULT_SCENE_UPDATE_THRESHOLD_MS;
+        if (data.metaLoopAdancer) {
+            this._metaLoopAdancer = data.metaLoopAdancer;
+        }
         this._onFoodItemConsumed = data.onFoodItemConsumed;
 
         this._state = "idling";
-        this._lastUpdateTime = 0;
         this._currentScore = 0;
     }
 
     preload() {
         this._state = "starting";
         this._cursors = this.input.keyboard?.createCursorKeys();
-        this._lastUpdateTime = 0;
         this._currentScore = 0;
 
         // Start countdown.
@@ -90,7 +89,7 @@ class MainScene extends Phaser.Scene {
         const segmentWidth = viewportWidth / this._map.getColumns();
         const segmentHeight = viewportHeight / this._map.getRows();
 
-        const [ snakeI, snakeJ ] = this._map.getInitialSnakePosition() ??
+        const [snakeI, snakeJ] = this._map.getInitialSnakePosition() ??
             GenerateGridCoordinates(this._map, undefined);
         this._snake = new Snake(this,
             snakeI, snakeJ,
@@ -108,7 +107,8 @@ class MainScene extends Phaser.Scene {
             .setDepth(10);
 
         this._countdownText = this.add.text(viewportWidth / 2, viewportHeight / 2, _MAIN_SCENE_STARTING_MS.toString())
-            .setFontSize(64);
+            .setFontSize(64)
+            .setDepth(10);
 
         this.add.existing(this._snake);
         this.add.existing(this._foodItem);
@@ -142,8 +142,7 @@ class MainScene extends Phaser.Scene {
             snake.faceDown();
         }
 
-        if (time - this._lastUpdateTime > this._sceneUpdateThresholdMs) {
-            this._lastUpdateTime = time;
+        if (this._metaLoopAdancer.shouldAdvance(time)) {
             snake.move();
 
             const snakeOccupiedPoints = snake.bodyCoordinates();

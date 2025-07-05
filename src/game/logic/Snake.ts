@@ -13,6 +13,7 @@ class Snake extends Phaser.GameObjects.Group {
     _tableRows: number;
     _tableColumns: number;
     _moveDirection: Array<number>;
+    _lastKnownMoveDirection: Array<number>;
 
     constructor(scene: Phaser.Scene,
                 initialI: number, initialJ: number,
@@ -27,6 +28,7 @@ class Snake extends Phaser.GameObjects.Group {
         this._tableColumns = tableColumns;
 
         this._moveDirection = _MOVE_DIRECTION_RIGHT;
+        this._lastKnownMoveDirection = _MOVE_DIRECTION_RIGHT;
 
         this._addSegment(initialI, initialJ);
     }
@@ -35,6 +37,11 @@ class Snake extends Phaser.GameObjects.Group {
         const newSegment = new SnakeSegment(this.scene, i, j,
             this._segmentWidth, this._segmentHeight);
         this.add(newSegment, true);
+    }
+
+    getHeadPosition(): [number, number] {
+        const headSegment = this.getLast(/* active= */ true);
+        return [headSegment.i, headSegment.j];
     }
 
     checkPreMovementCollisionWith(i: number, j: number): boolean {
@@ -100,28 +107,31 @@ class Snake extends Phaser.GameObjects.Group {
 
         this.remove(tailSegment, true, true);
         this._addSegment(newHeadI, newHeadJ);
+
+        // Updating last known move direction as well.
+        this._lastKnownMoveDirection = this._moveDirection;
     }
 
     faceRight() {
-        if (this._moveDirection !== _MOVE_DIRECTION_LEFT) {
+        if (this._lastKnownMoveDirection !== _MOVE_DIRECTION_LEFT) {
             this._moveDirection = _MOVE_DIRECTION_RIGHT;
         }
     }
 
     faceUp() {
-        if (this._moveDirection !== _MOVE_DIRECTION_DOWN) {
+        if (this._lastKnownMoveDirection !== _MOVE_DIRECTION_DOWN) {
             this._moveDirection = _MOVE_DIRECTION_UP;
         }
     }
 
     faceLeft() {
-        if (this._moveDirection !== _MOVE_DIRECTION_RIGHT) {
+        if (this._lastKnownMoveDirection !== _MOVE_DIRECTION_RIGHT) {
             this._moveDirection = _MOVE_DIRECTION_LEFT;
         }
     }
 
     faceDown() {
-        if (this._moveDirection !== _MOVE_DIRECTION_UP) {
+        if (this._lastKnownMoveDirection !== _MOVE_DIRECTION_UP) {
             this._moveDirection = _MOVE_DIRECTION_DOWN;
         }
     }

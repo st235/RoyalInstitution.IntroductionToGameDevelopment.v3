@@ -15,6 +15,7 @@ import MinScreenSizeOverlay from "./min-screen-size-overlay/MinScreenSizeOverlay
 import PageExercise0 from "./exercises/PageExercise0";
 import PageExercise1 from "./exercises/PageExercise1";
 import PageExercise2 from "./exercises/PageExercise2";
+import PageExercise3 from "./exercises/PageExercise3";
 
 type SidebarRailProps = {
   selectedPageId: string;
@@ -61,6 +62,7 @@ function RootNavigator() {
         {selectedPageId === "1" && <PageExercise0 page={pages[selectedPageId]} />}
         {selectedPageId === "2" && <PageExercise1 page={pages[selectedPageId]} />}
         {selectedPageId === "3" && <PageExercise2 page={pages[selectedPageId]} />}
+        {selectedPageId === "4" && <PageExercise3 page={pages[selectedPageId]} />}
       </SidebarLayout>
     </div>
   )

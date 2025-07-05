@@ -2,7 +2,8 @@ type MovementDirection = "left" | "right" | "down" | "up";
 
 abstract class SnakeMovementController {
     abstract onUpdate(dt: number): void;
-    abstract getMovementDirection(): MovementDirection | undefined;
+    abstract getMovementDirection(snake: [number, number],
+        food: [number, number]): MovementDirection | undefined;
     abstract onStop(): void;
 };
 

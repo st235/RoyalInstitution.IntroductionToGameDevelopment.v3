@@ -147,7 +147,11 @@ class MainScene extends Phaser.Scene {
         this._movementController?.onUpdate(dt);
 
         if (this._metaLoopAdancer.shouldAdvance(time)) {
-            const movementDirection = this._movementController?.getMovementDirection();
+            const snakePosition: [number, number] = snake.getHeadPosition();
+            const foodPosition: [number, number] = [foodItem.i!, foodItem.j!];
+            const movementDirection = this._movementController?.getMovementDirection(
+                snakePosition, foodPosition);
+
             if (movementDirection === "right") {
                 snake.faceRight();
             } else if (movementDirection === "up") {

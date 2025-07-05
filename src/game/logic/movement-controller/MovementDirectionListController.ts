@@ -16,7 +16,7 @@ class MovementDirectionListController extends SnakeMovementController {
         // Empty on purpose.
     }
 
-    getMovementDirection(): MovementDirection | undefined {
+    getMovementDirection(_snake: [number, number], _food: [number, number]): MovementDirection | undefined {
         const direction = this._directions[this._directionIndex];
         this._directionIndex += 1;
         return direction;

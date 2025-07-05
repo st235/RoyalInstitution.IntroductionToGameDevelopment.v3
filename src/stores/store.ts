@@ -4,7 +4,10 @@ import exerciseReducer from "../reducers/exerciseSlice";
 import pageGameAndLearnReducer from "../reducers/pages/pageGameAndLearnSlice";
 import pageDesignObstaclesReducer from "../reducers/pages/pageDesignObstacles";
 import pageSolveMazeReducer from "../reducers/pages/pageSolveMaze";
-import pageEasyControllerReducer from "../reducers/pages/pageEasyController";
+import pageControllerNoObstaclesReducer from "../reducers/pages/pageControllerNoObstacles";
+import pageControllerSingleObstacleReducer from "../reducers/pages/pageControllerSingleObstacle";
+import pageControllerBoxObstacleReducer from "../reducers/pages/pageControllerBoxObstacle";
+import pageControllerMultipleObstaclesReducer from "../reducers/pages/pageControllerMultipleObstacles";
 
 export const store = configureStore({
     reducer: {
@@ -12,7 +15,10 @@ export const store = configureStore({
         pageGameAndLearn: pageGameAndLearnReducer,
         pageDesignObstacles: pageDesignObstaclesReducer,
         pageSolveMaze: pageSolveMazeReducer,
-        pageEasyController: pageEasyControllerReducer,
+        pageControllerNoObstacles: pageControllerNoObstaclesReducer,
+        pageControllerSingleObstacle: pageControllerSingleObstacleReducer,
+        pageControllerBoxObstacle: pageControllerBoxObstacleReducer,
+        pageControllerMultipleObstacles: pageControllerMultipleObstaclesReducer,
     },
 });
 

@@ -27,7 +27,11 @@ class KeyboardDrivenMovementController extends SnakeMovementController {
         }
     }
 
-    getMovementDirection(_snake: [number, number], _food: [number, number]): MovementDirection | undefined {
+    getMovementDirection(
+        _snake: [number, number],
+        _food: [number, number],
+        _occupiedCellsMap: Array<Array<boolean>>,
+    ): MovementDirection | undefined {
         return this._lastKnownMovementDirection;
     }
 

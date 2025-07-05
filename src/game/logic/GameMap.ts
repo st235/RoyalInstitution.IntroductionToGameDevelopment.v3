@@ -42,16 +42,37 @@ class GameMap {
         return this._columns;
     }
 
+    getFieldDimensions(): [number, number] {
+        return [this._rows, this._columns];
+    }
+
     getInitialSnakePosition(): [number, number] | undefined {
         return this._initialSnakePosition;
     }
 
-    getInitialFoodPosition(): [number, number] | undefined {
+    getInitialFoodItemPosition(): [number, number] | undefined {
         return this._initialFoodPosition;
     }
 
     getType(i: number, j: number): CellType {
         return this._cellTypes[i * this._columns + j];
+    }
+
+    getOccupied(): Array<Array<boolean>> {
+        const map = Array.from({length: this._rows}, () =>
+            Array.from({length: this._columns}, () => false));
+
+        for (let i = 0; i < this._rows; i++) {
+            for (let j = 0; j < this._columns; j++) {
+                const cellType = this._cellTypes[i * this._columns + j];
+
+                if (cellType != "unoccupied") {
+                    map[i][j] = true;
+                }
+            }
+        }
+
+        return map;
     }
 
     iterate(callback: (item: CellType, ri: number, cj: number) => void) {

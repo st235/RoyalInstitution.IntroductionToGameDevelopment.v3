@@ -30,12 +30,12 @@ class Snake extends Phaser.GameObjects.Group {
         this._moveDirection = _MOVE_DIRECTION_RIGHT;
         this._lastKnownMoveDirection = _MOVE_DIRECTION_RIGHT;
 
-        this._addSegment(initialI, initialJ);
+        this._addSegment(initialI, initialJ, false);
     }
 
-    private _addSegment(i: number, j: number) {
+    private _addSegment(i: number, j: number, withFruit?: boolean) {
         const newSegment = new SnakeSegment(this.scene, i, j,
-            this._segmentWidth, this._segmentHeight);
+            this._segmentWidth, this._segmentHeight, withFruit);
         this.add(newSegment, true);
     }
 
@@ -44,58 +44,56 @@ class Snake extends Phaser.GameObjects.Group {
         return [headSegment.i, headSegment.j];
     }
 
-    checkPreMovementCollisionWith(i: number, j: number): boolean {
+    willCollideAtPosition(position: [number, number]): boolean {
+        const [i, j] = position;
         const [newHeadI, newHeadJ] = this._getNextSegmentCoordinates();
         return (newHeadI === i && newHeadJ === j);
     }
 
-    checkPostMovementCollisionWith(i: number, j: number): boolean {
-        const headSegment = this.getLast(/* active= */ true);
-        return (headSegment.i === i && headSegment.j === j);
+    willCollideWithMap(occupiedCells: Array<Array<boolean>>): boolean {
+        const [newHeadI, newHeadJ] = this._getNextSegmentCoordinates();
+        return occupiedCells[newHeadI][newHeadJ];
     }
 
-    getSegmentsCoordinates(): { [Key: number]: { [Key: number]: number } } {
-        const bodyCoordinates: { [Key: number]: { [Key: number]: number } } = {};
+    dumpSegments(occupiedCells: Array<Array<boolean>>,
+        includeTail?: boolean) {
+        const tailSegment = this.getFirst(/* active= */ true);
 
-        this.children.iterate(rawChild => {
-            const child = rawChild as SnakeSegment;
+        for (const entry of this.children.entries) {
+            const child = entry as SnakeSegment;
             const [i, j] = [child.i, child.j];
 
-            if (!(i in bodyCoordinates)) {
-                bodyCoordinates[i] = {};
-            }
-            if (!(j in bodyCoordinates[i])) {
-                bodyCoordinates[i][j] = 0;
+            if (!includeTail &&
+                i == tailSegment.i &&
+                j == tailSegment.j) {
+                continue;
             }
 
-            bodyCoordinates[i][j] += 1;
-            return true;
-        }, true);
-
-        return bodyCoordinates;
+            occupiedCells[i][j] = true;
+        }
     }
 
     grow() {
-        const tailSegment = this.getFirst(/* active= */ true);
-
         const newChildren = [];
-        // Grow the snake by one segment, and add it to the
-        // back of the segments list.
-        newChildren.push([tailSegment.i, tailSegment.j]);
 
         // Copy existing segments.
         this.children.iterate(rawChild => {
             const child = rawChild as SnakeSegment;
-            newChildren.push([child.i, child.j]);
+            newChildren.push([child.i, child.j, false]);
             return true;
         });
+
+        // Grow the snake by one segment, and add it to the
+        // back of the segments list.
+        const [newHeadI, newHeadJ] = this._getNextSegmentCoordinates();
+        newChildren.push([newHeadI, newHeadJ, true]);
 
         // Remove all children and stop drawing them.
         this.clear(true, true);
 
         for (const segment of newChildren) {
-            const [i, j] = segment;
-            this._addSegment(i, j);
+            const [i, j, withFruit] = segment;
+            this._addSegment(i, j, withFruit);
         }
     }
 

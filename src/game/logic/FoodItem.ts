@@ -1,7 +1,6 @@
 import Phaser from "phaser";
 
 import { GenerateGridCoordinates } from "./PlacementUtil";
-import GameMap from "./GameMap";
 
 const _FOOD_COLOUR = 0xEFD631;
 const _DEFAULT_CONSUMPTION_SCORE = 10;
@@ -29,12 +28,22 @@ class FoodItem extends Phaser.GameObjects.Star {
         this.score = score;
     }
 
-    place(map: GameMap,
-          snakeBodyPoints: { [Key: number]: { [Key: number]: number } },
-          atSpecificPosition?: [number, number]) {
-        const newFoodItemPosition = atSpecificPosition ?? GenerateGridCoordinates(map, snakeBodyPoints);
-        const [ni, nj] = newFoodItemPosition;
+    requirePosition(): [number, number] {
+        return [this.i!, this.j!];
+    }
 
+    dumpPosition(occupiedCells: Array<Array<boolean>>) {
+        const [i, j] = this.requirePosition();
+        occupiedCells[i][j] = true;
+    }
+
+    placeAtAvailableCell(occupiedCells: Array<Array<boolean>>) {
+        const newFoodItemPosition = GenerateGridCoordinates(occupiedCells);
+        this.placeAt(newFoodItemPosition);
+    }
+
+    placeAt(position: [number, number]) {
+        const [ni, nj] = position;
         this.i = ni;
         this.j = nj;
         this.x = nj * this.width + this.width / 2;

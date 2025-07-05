@@ -1,4 +1,4 @@
-import "./PageExercise3.css";
+import "./PageExercise5.css";
 
 import { useMemo, useRef } from "react";
 
@@ -7,7 +7,7 @@ import type { PageWithExercise } from "../../types/Page";
 import type { PhaserGameContainerRef } from "../../game/PhaserGameContainer";
 
 import { completeExercise } from "../../reducers/exerciseSlice";
-import { updateSandbox } from "../../reducers/pages/pageControllerNoObstacles";
+import { updateSandbox } from "../../reducers/pages/pageControllerBoxObstacle";
 import { useAppSelector, useAppDispatch } from "../../hooks/redux";
 import DragHandler from "../../components/drag-handler/DragHandler";
 import GameMap from "../../game/logic/GameMap";
@@ -18,21 +18,42 @@ import ProgrammableMovementController from "../../game/logic/movement-controller
 import ManualMetaLoopAdancer from "../../game/logic/loop/ManualMetaLoopAdvancer";
 
 const defaultGameMap = `
-40,30
+20,15
+.,#,s,f
+###############
+#.............#
+#.............#
+#.............#
+#.............#
+#.............#
+#.............#
+#.............#
+#.............#
+#.............#
+#.............#
+#.............#
+#.............#
+#.............#
+#.............#
+#.............#
+#.............#
+#.............#
+#.............#
+###############
 `;
 
-type PageExercise3Props = {
+type PageExercise5Props = {
     page: PageWithExercise;
 };
 
-function PageExercise3(props: PageExercise3Props) {
+function PageExercise5(props: PageExercise5Props) {
     const dispatch = useAppDispatch();
-    const sandbox = useAppSelector(state => state.pageControllerNoObstacles.sandbox);
+    const sandbox = useAppSelector(state => state.pageControllerBoxObstacle.sandbox);
 
     const phaserRef = useRef<PhaserGameContainerRef>(null);
 
     const gameConfig = useMemo(() => {
-        return CreateGameConfig(sandbox ?? "function () {return \"up\";}");
+        return CreateGameConfig(sandbox ?? "function () {return \"down\";}");
     }, [sandbox]);
 
     function onSaveClicked(sandboxValue: string) {
@@ -45,7 +66,7 @@ function PageExercise3(props: PageExercise3Props) {
             metaLoopAdvancer: ManualMetaLoopAdancer.create(),
             movementController: ProgrammableMovementController.create(rawFunctionCode),
             onFoodItemConsumed: score => {
-                if (score > 100) {
+                if (score >= 50) {
                     dispatch(completeExercise(props.page.id));
                 }
             },
@@ -63,5 +84,5 @@ function PageExercise3(props: PageExercise3Props) {
     );
 }
 
-export default PageExercise3;
-export type { PageExercise3Props };
+export default PageExercise5;
+export type { PageExercise5Props };

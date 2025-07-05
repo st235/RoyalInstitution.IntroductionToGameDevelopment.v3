@@ -2,7 +2,6 @@ import Phaser from "phaser";
 
 import GameMap from "./GameMap";
 import Obstacle from "./Obstacle";
-import Snake from "./Snake";
 
 class ObstaclesGroup extends Phaser.GameObjects.Group {
     readonly _segmentWidth: number;
@@ -30,17 +29,6 @@ class ObstaclesGroup extends Phaser.GameObjects.Group {
         const newSegment = new Obstacle(
             this.scene, i, j, this._segmentWidth, this._segmentHeight);
         this.add(newSegment, true);
-    }
-
-    willCollideAfterMovement(snake: Snake): boolean {
-        for (const rawChild of this.children.entries) {
-            const child = rawChild as Obstacle;
-            if (snake.checkPreMovementCollisionWith(child.i, child.j)) {
-                return true;
-            }
-        };
-
-        return false;
     }
 }
 

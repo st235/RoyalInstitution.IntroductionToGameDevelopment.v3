@@ -16,6 +16,9 @@ import PageExercise0 from "./exercises/PageExercise0";
 import PageExercise1 from "./exercises/PageExercise1";
 import PageExercise2 from "./exercises/PageExercise2";
 import PageExercise3 from "./exercises/PageExercise3";
+import PageExercise4 from "./exercises/PageExercise4";
+import PageExercise5 from "./exercises/PageExercise5";
+import PageExercise6 from "./exercises/PageExercise6";
 
 type SidebarRailProps = {
   selectedPageId: string;
@@ -63,6 +66,9 @@ function RootNavigator() {
         {selectedPageId === "2" && <PageExercise1 page={pages[selectedPageId]} />}
         {selectedPageId === "3" && <PageExercise2 page={pages[selectedPageId]} />}
         {selectedPageId === "4" && <PageExercise3 page={pages[selectedPageId]} />}
+        {selectedPageId === "5" && <PageExercise4 page={pages[selectedPageId]} />}
+        {selectedPageId === "6" && <PageExercise5 page={pages[selectedPageId]} />}
+        {selectedPageId === "7" && <PageExercise6 page={pages[selectedPageId]} />}
       </SidebarLayout>
     </div>
   )

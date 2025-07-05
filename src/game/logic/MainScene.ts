@@ -96,16 +96,26 @@ class MainScene extends Phaser.Scene {
         const segmentWidth = viewportWidth / this._map.getColumns();
         const segmentHeight = viewportHeight / this._map.getRows();
 
-        const [snakeI, snakeJ] = this._map.getInitialSnakePosition() ??
-            GenerateGridCoordinates(this._map, undefined);
+        const initialSnakePosition = this._map.getInitialSnakePosition();
+        const initialFoodItemPosition = this._map.getInitialFoodItemPosition();
+
+        const occupiedCellsMap = this._map.getOccupied();
+
+        const [snakeI, snakeJ] = initialSnakePosition ?? GenerateGridCoordinates(occupiedCellsMap);
+
         this._snake = new Snake(this,
             snakeI, snakeJ,
             segmentWidth, segmentHeight,
             this._map.getRows(), this._map.getColumns());
+        // Dumping a dynamic object into the map.
+        this._snake.dumpSegments(occupiedCellsMap, /* includeTail= */ true);
 
         this._foodItem = new FoodItem(this, segmentWidth, segmentHeight);
-        this._foodItem.place(this._map, this._snake.getSegmentsCoordinates(),
-            this._map.getInitialFoodPosition());
+        if (initialFoodItemPosition) {
+            this._foodItem.placeAt(initialFoodItemPosition);
+        } else {
+            this._foodItem.placeAtAvailableCell(occupiedCellsMap);
+        }
 
         this._obstacles = new ObstaclesGroup(this, segmentWidth, segmentHeight, this._map);
 
@@ -141,7 +151,6 @@ class MainScene extends Phaser.Scene {
 
         const snake = this._snake!;
         const foodItem = this._foodItem!;
-        const obstacles = this._obstacles!;
         const scoreText = this._scoreText!;
 
         this._movementController?.onUpdate(dt);
@@ -149,8 +158,13 @@ class MainScene extends Phaser.Scene {
         if (this._metaLoopAdancer.shouldAdvance(time)) {
             const snakePosition: [number, number] = snake.getHeadPosition();
             const foodPosition: [number, number] = [foodItem.i!, foodItem.j!];
+
+            const occupiedCellsMap = this._map.getOccupied();
+            // Dump without a tail as we consider this map for the upcoming meta frame.
+            snake.dumpSegments(occupiedCellsMap);
+
             const movementDirection = this._movementController?.getMovementDirection(
-                snakePosition, foodPosition);
+                snakePosition, foodPosition, occupiedCellsMap);
 
             if (movementDirection === "right") {
                 snake.faceRight();
@@ -162,36 +176,30 @@ class MainScene extends Phaser.Scene {
                 snake.faceDown();
             }
 
-            // Pre movement checks.
-            if (obstacles.willCollideAfterMovement(snake)) {
+            // Checking collisions with static obstacles,
+            // and a snake without a tail (as tail won't exist next frame).
+            if (snake.willCollideWithMap(occupiedCellsMap)) {
                 this._onStop();
                 return;
             }
 
-            // Movement.
-            snake.move();
-
-            // Post movement checks.
-            const segmentOccupiedCoordinates = snake.getSegmentsCoordinates();
-
-            for (const row in segmentOccupiedCoordinates) {
-                for (const column in segmentOccupiedCoordinates[row]) {
-                    if (segmentOccupiedCoordinates[row][column] > 1) {
-                        this._onStop();
-                        return;
-                    }
-                }
-            }
-
-            if (snake.checkPostMovementCollisionWith(foodItem.i!, foodItem.j!)) {
+            // Check collisions with food item.
+            if (snake.willCollideAtPosition(foodItem.requirePosition())) {
                 snake.grow();
 
-                foodItem.place(this._map, segmentOccupiedCoordinates);
+                // Dumping position of a food item as occupied,
+                // as the snake will occupy it after movement.
+                foodItem.dumpPosition(occupiedCellsMap);
+                foodItem.placeAtAvailableCell(occupiedCellsMap);
+
                 this._currentScore += foodItem.score;
                 scoreText.setText("Score: " + this._currentScore);
 
                 this._onFoodItemConsumed?.(this._currentScore);
             }
+
+            // Movement.
+            snake.move();
         }
     }
 

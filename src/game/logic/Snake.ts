@@ -74,6 +74,12 @@ class Snake extends Phaser.GameObjects.Group {
     }
 
     grow() {
+        const tailSegment = this.getFirst(/* active= */ true);
+        // _getNextSegmentCoordinates should be called before removing tail,
+        // as if the snake is of length 1, there would be no children in the set.
+        const [newHeadI, newHeadJ] = this._getNextSegmentCoordinates();
+        this.remove(tailSegment, true, true);
+
         const newChildren = [];
 
         // Copy existing segments.
@@ -83,9 +89,11 @@ class Snake extends Phaser.GameObjects.Group {
             return true;
         });
 
+        // Compensating for the removed tail segment.
+        newChildren.push([newHeadI, newHeadJ, false]);
+
         // Grow the snake by one segment, and add it to the
         // back of the segments list.
-        const [newHeadI, newHeadJ] = this._getNextSegmentCoordinates();
         newChildren.push([newHeadI, newHeadJ, true]);
 
         // Remove all children and stop drawing them.

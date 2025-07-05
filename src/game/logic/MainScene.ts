@@ -196,10 +196,9 @@ class MainScene extends Phaser.Scene {
                 scoreText.setText("Score: " + this._currentScore);
 
                 this._onFoodItemConsumed?.(this._currentScore);
+            } else {
+                snake.move();
             }
-
-            // Movement.
-            snake.move();
         }
     }
 

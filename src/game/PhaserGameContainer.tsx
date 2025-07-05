@@ -125,11 +125,11 @@ function PhaserGameContainer(props: PhaserGameContainerProps) {
 
         return () => {
             if (game.current) {
-                game.current.destroy(true);
+                game.current.destroy(true, false);
                 game.current = null;
             }
         }
-    }, [ref]);
+    }, [ref, game]);
 
     useEffect(() => {
         EventBus.on("current-scene-ready", (newScene: Phaser.Scene) => {

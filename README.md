@@ -3,7 +3,7 @@
 This is an interactive **Web IDE** built to teach game development using the classic **Snake game** written in **Phaser.js**.
 The IDE is designed for **educational workshops**, allowing learners to explore how games are built by playing, modifying, and debugging game logic in real time.
 
->[!INFO]
+>[!NOTE]
 > Created for a [**Royal Institution**](https://www.rigb.org) workshop to introduce students to game programming concepts using JavaScript and visual programming techniques.
 
 ## Features
@@ -39,8 +39,8 @@ npm install
 npm run dev
 ```
 
-> [!INFO]
-> Open your browser at http://localhost:5173
+> [!TIP]
+> Open your browser at http://localhost:5173/RoyalInstitution.IntroductionToGameDevelopment.v3 to see the Web IDE running
 
 ## 📚 Workshop Exercises Overview
 

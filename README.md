@@ -1,54 +1,65 @@
-# React + TypeScript + Vite
+# 🐍 Snake Game Web IDE
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is an interactive **Web IDE** built to teach game development using the classic **Snake game** written in **Phaser.js**.
+The IDE is designed for **educational workshops**, allowing learners to explore how games are built by playing, modifying, and debugging game logic in real time.
 
-Currently, two official plugins are available:
+>[!INFO]
+> Created for a [**Royal Institution**](https://www.rigb.org) workshop to introduce students to game programming concepts using JavaScript and visual programming techniques.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **Step-by-step Debugger** – Execute the game loop one frame at a time.
+- **7 Learning Exercises** – From playing the game to writing the rules and implementing the snake’s controller.
+- **Live Preview** – See the game update as you modify logic.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
+- Built using [Phaser.js](https://phaser.io/), a fast and fun HTML5 game framework.
+- Uses Redux to manage game and UI state cleanly.
+- Built with TypeScript, React, Redux, and Vite.js for blazing-fast development.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 🚀 Getting Started
+
+### Try it Online
+
+You can try the project directly via GitHub Pages:  
+[👉 Launch the Web IDE](https://st235.github.io/RoyalInstitution.IntroductionToGameDevelopment.v3/)
+
+### 🧑‍💻 Local Development
+
+1. Clone repo
+2. Install dependencies:
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+3. Run the development server:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm run dev
 ```
+
+> [!INFO]
+> Open your browser at http://localhost:5173
+
+## 📚 Workshop Exercises Overview
+
+| Exercise | Description |
+| ---- | ---- |
+| 1 | Play the game and observe how it behaves |
+| 2 | Designing the level |
+| 3 | Solving a maze with basic snake controller |
+| 4 - 7| Implementing snake controller |
+
+## About the Project
+
+This IDE was developed as part of an educational outreach workshop hosted by the Royal Institution.
+It provides a hands-on introduction to core programming and game development principles for students aged 10–14.
+
+- [Slides](https://docs.google.com/presentation/d/1Mjba1zi_cBy_Yj6Ie7shPmTOuNbAomML247daykqZMo/edit?usp=sharing)
+
+### Screenshots
+
+| Exercise 1 | Exercise 2 | Exercise 3 |
+| ---- | ---- | ---- |
+| ![Exercise 1](./assets/exercise1.png) | ![Exercise 2](./assets/exercise2.png) | ![Exercise 3](./assets/exercise3.png) |

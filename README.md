@@ -1,3 +1,5 @@
+<img src="./assets/logo.png" width="200" />
+
 # 🐍 Snake Game Web IDE
 
 This is an interactive **Web IDE** built to teach game development using the classic **Snake game** written in **Phaser.js**.
